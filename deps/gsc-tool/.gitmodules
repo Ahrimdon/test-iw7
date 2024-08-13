@@ -1,0 +1,7 @@
+[submodule "deps/zlib"]
+	path = deps/zlib
+	url = https://github.com/madler/zlib
+	branch = master
+[submodule "deps/cxxopts"]
+	path = deps/cxxopts
+	url = https://github.com/jarro2783/cxxopts.git
