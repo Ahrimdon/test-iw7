@@ -1,20 +1,54 @@
-![license](https://img.shields.io/github/license/h1-mod/iw7-mod.svg)
-[![open bugs](https://img.shields.io/github/issues/h1-mod/iw7-mod/bug?label=bugs)](https://github.com/h1-mod/iw7-mod/issues?q=is%3Aissue+is%3Aopen+label%3Abug)
-[![discord](https://img.shields.io/discord/945420505157083208?color=%237289DA&label=members&logo=discord&logoColor=%23FFFFFF)](https://discord.gg/RzzXu5EVnh)
-<!--
-[![Build](https://github.com/h1-mod/h1-mod/workflows/Build/badge.svg)](https://github.com/h1-mod/h1-mod/actions)
-[![Build status](https://ci.appveyor.com/api/projects/status/0sh80kdnsvm53rno?svg=true)](https://ci.appveyor.com/project/h1-mod/h1-mod)
--->
-
 # IW7-Mod
 
+[![discord](https://img.shields.io/badge/Repackers-_Disocrd-blue)](https://discord.com/invite/YcZv2Stt2w)
+[![website](https://img.shields.io/badge/Repackers-_Website-blue)](https://rimmyscorner.com/)
+
 <p align="center">
-  <img src="assets/github/banner.png?raw=true" />
+  <img src="assets/gitea/banner-iw7.png?raw=true" />
 </p>
 
-<br>
+## Prerequisites: Installing Git (Optional)
 
-**NOTE**: You must legally own a copy of Call of Duty®: Infinite Warfare to run this mod. Cracked/pirated versions of the game are **NOT** supported. Grab a copy of the game from Steam: https://store.steampowered.com/app/292730/Call_of_Duty_Infinite_Warfare/
+If you don't have `git` installed on your machine, follow these steps:
+
+1. Visit the [Git download page](https://git-scm.com/downloads).
+2. Download the appropriate version for your operating system.
+3. Run the installer.
+   - During the installation, you will be asked if you want to add Git to your system's PATH environment variable. Ensure you choose the option to do so. This allows you to use Git from the command line without specifying its full path.
+4. After installation, open a terminal or command prompt and type `git --version` to ensure Git is correctly installed.
+
+## Download
+Clone the Git repository or download as ZIP.
+
+- <u>**Download Release (EASIEST)**</u>
+  - Click on `Releases` at the top and navigate to the latest release
+  - Click `iw7-mod.zip`
+
+- <u>**Download ZIP**</u>
+  - Click on the three dots at the top of the repo ( `◘◘◘` )
+  - Click `Download ZIP`
+
+- <u>**Clone the repository:**</u>
+  - Open a terminal or command prompt.
+  - Run the following command:
+    ```
+    git clone http://git.rimmyscorner.com/Rim/iw7-mod.git
+    ```
+
+## Repository Contents
+  - IW7-Mod Client
+  - All Necessary Files
+
+## Added Features
+  - Removed IW7-Mod Watermark
+  - Remove "--dirty" commit version on build
+  - Remove Steam/Ownership verification
+
+## Installation
+
+1. Extract `iw7-mod.exe`, `runner.exe` & `tlsdll.dll` in your `Infinite Warfare` directory.
+    > **Note**: Usual location is `C:\Program Files (x86)\Steam\steamapps\common\Call of Duty - Infinite Warfare`
+2. Launch `iw7-mod.exe`
 
 ## Compile from source
 
