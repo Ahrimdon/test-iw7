@@ -71,6 +71,8 @@ FunctionEnd
 Section "Main Application" SecMain
     SetOutPath $INSTDIR
     File "..\build\bin\x64\Release\iw7-mod.exe"
+    File "..\build\bin\x64\Release\runner.exe"
+    File "..\build\bin\x64\Release\tlsdll.dll"
     WriteUninstaller "$INSTDIR\Uninstall.exe"
 SectionEnd
 
@@ -99,6 +101,8 @@ FunctionEnd
 ; Uninstaller Sections
 Section "Uninstall"
     Delete $INSTDIR\iw7-mod.exe
+    Delete $INSTDIR\runner.exe
+    Delete $INSTDIR\tlsdll.dll
     Delete "$DESKTOP\${PRODUCT_NAME}.lnk"
     Delete $INSTDIR\main\server_mp.cfg
     Delete $INSTDIR\main\server_zm.cfg
