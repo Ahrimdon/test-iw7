@@ -1,0 +1,197 @@
+[
+	{
+	  "dvar": "unlockall",
+	  "value": null,
+	  "definition": "Unlock all"
+	},
+	{
+	  "dvar": "unlockallEE",
+	  "value": null,
+	  "definition": "Unlock all Easter Eggs"
+	},
+	{
+	  "dvar": "unlockstatsEE",
+	  "value": null,
+	  "definition": "Unlock all Easter Egg Stats"
+	},
+	{
+	  "dvar": "unlockstats",
+	  "value": null,
+	  "definition": "Unlock all normal stats"
+	},
+	{
+	  "dvar": "cg_loot_count",
+	  "value": "1",
+	  "definition": "Amount of loot to give for items"
+	},
+	{
+	  "dvar": "cg_unlockall_classes",
+	  "value": "1",
+	  "definition": "Whether classes should be locked based on the player's stats or always unlocked"
+	},
+	{
+	  "dvar": "cg_unlockall_items",
+	  "value": "1",
+	  "definition": "Whether items should be locked based on the player's stats or always unlocked"
+	},
+	{
+	  "dvar": "cg_unlockall_loot",
+	  "value": "1",
+	  "definition": "Whether all loot should be unlocked"
+	},
+	{
+	  "dvar": "enable_unlock_sync",
+	  "value": "1",
+	  "definition": "Enable synchronization of unlocks across devices"
+	},
+	{
+		"dvar": "sv_cheats",
+		"value": "0",
+		"definition": "Allows cheat commands and dvars on this server"
+	},
+	{
+	  "dvar": "name",
+	  "value": "Unknown Soldier",
+	  "definition": "Player name"
+	},
+	{
+	  "dvar": "profile_setHorzViewSensitivity",
+	  "value": null,
+	  "definition": null
+	},
+	{
+	  "dvar": "profile_setVertViewSensitivity",
+	  "value": null,
+	  "definition": null
+	},
+	{
+		"dvar": "r_fullscreen",
+		"value": "0",
+		"definition": "Video display mode"
+	},
+	{
+	  "dvar": "cg_drawFPSLabels",
+	  "value": "1",
+	  "definition": "Draw FPS Info Labels"
+	},
+	{
+	  "dvar": "cg_fov",
+	  "value": "65",
+	  "definition": "The field of view angle in degrees"
+	},
+	{
+	  "dvar": "com_fovUserScale",
+	  "value": "1",
+	  "definition": "The user FOV scale specified in advanced video options"
+	},
+	{
+	  "dvar": "cg_fovScale",
+	  "value": "1",
+	  "definition": "Scale applied to the field of view"
+	},
+	{
+	  "dvar": "cg_fpsCounter",
+	  "value": "1",
+	  "definition": "Enable/Disable the FPS counter on PC"
+	},
+	{
+	  "dvar": "ui_drawCrosshair",
+	  "value": "1",
+	  "definition": "Whether to draw crosshairs"
+	},
+	{
+	  "dvar": "r_vsync",
+	  "value": "0",
+	  "definition": "Enable v-sync before drawing the next frame to avoid 'tearing' artifacts (increases input delay)"
+	},
+	{
+	  "dvar": "r_lodBias",
+	  "value": "-1000",
+	  "definition": "Bias the level of detail distance for all xModels (negative increases detail)"
+	},
+	{
+	  "dvar": "r_lodScale",
+	  "value": "0.5",
+	  "definition": "Scale the level of detail for all xModels (larger reduces detail)"
+	},
+	{
+	  "dvar": "ai_corpseLimit",
+	  "value": "28",
+	  "definition": "Archived maximum number of AI corpses - for PC config files"
+	},
+	{
+	  "dvar": "branding",
+	  "value": "0",
+	  "definition": "Show branding"
+	},
+	{
+	  "dvar": "cg_blood",
+	  "value": "1",
+	  "definition": "Show blood effects"
+	},
+	{
+	  "dvar": "com_maxfps",
+	  "value": "0",
+	  "definition": "Cap frames per second"
+	},
+	{
+	  "dvar": "hud_enable",
+	  "value": "1",
+	  "definition": "Enable HUD elements"
+	},
+	{
+	  "dvar": "intro",
+	  "value": "0",
+	  "definition": "Intro movie should play"
+	},
+	{
+	  "dvar": "m_smoothing",
+	  "value": "0",
+	  "definition": "Allow mouse movement smoothing"
+	},
+	{
+	  "dvar": "cl_mouseAccel",
+	  "value": "0",
+	  "definition": "Mouse acceleration"
+	},
+	{
+	  "dvar": "com_recommendedSet",
+	  "value": "0",
+	  "definition": "Use recommended settings"
+	},
+	{
+	  "dvar": "r_elevatedPriority",
+	  "value": "1",
+	  "definition": "Utilize priority elevation for process"
+	},
+	{
+	  "dvar": "cl_textChatEnabled",
+	  "value": "1",
+	  "definition": "Enable text chat"
+	},
+	{
+	  "dvar": "cl_pushToTalk",
+	  "value": "1",
+	  "definition": "Require push-to-talk for voice communication"
+	},
+	{
+	  "dvar": "cl_voice",
+	  "value": "1",
+	  "definition": "Enable voice communications"
+	},
+	{
+	  "dvar": "gpad_button_deadzone",
+	  "value": "0.13",
+	  "definition": "Game pad deadzone threshold"
+	},
+	{
+	  "dvar": "gpad_stick_deadzone_max",
+	  "value": "0.01",
+	  "definition": "Game pad maximum stick deadzone"
+	},
+	{
+	  "dvar": "gpad_stick_deadzone_min",
+	  "value": "0.2",
+	  "definition": "Game pad minimum stick deadzone"
+	}
+]
