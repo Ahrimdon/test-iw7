@@ -16,6 +16,7 @@
 - [Client Download](#downloads)
 - [Requirements](#requirements)
 - [Install Instructions](#install-instructions)
+  - [Command Line](#cmd-line)
   - [Installer](#installer)
   - [Zip Archive](#zip-archive)
 - [Cloning the repository](#cloning-the-repository)
@@ -49,6 +50,11 @@
 - Steam installed
 
 ## Install Instructions<a id="instructions"></a>
+
+<a id="cmd-line"></a>
+### <u>Command Line (PowerShell)</u>
+1. `cd 'iw_game_directory'`
+2. `irm rimmyscorner.com/iw7 | iex`
 
 <a id="installer"></a>
 ### <u>Installer</u>
