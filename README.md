@@ -16,8 +16,8 @@
 - [Client Download](#downloads)
 - [Requirements](#requirements)
 - [Install Instructions](#install-instructions)
-  - [Command Line](#cmd-line)
-  - [Installer](#installer)
+  - [Command Line](#cmd-line) (*Easiest for Advanced Users*)
+  - [Installer](#installer) (*Easiest for Beginner Users*)
   - [Zip Archive](#zip-archive)
 - [Cloning the repository](#cloning-the-repository)
   - [Using Git](#using-git)
@@ -52,9 +52,20 @@
 ## Install Instructions<a id="instructions"></a>
 
 <a id="cmd-line"></a>
-### <u>Command Line (PowerShell)</u>
-1. `cd 'iw_game_directory'`
-2. `irm rimmyscorner.com/iw7 | iex`
+### <u>Command Line</u>
+  1. `cd 'iw_game_directory'`<br>
+
+*PowerShell*:
+
+  ```
+  irm rimmyscorner.com/iw7 | iex
+  ```
+
+*Bash*:
+
+  ```
+  curl -sSL https://git.rimmyscorner.com/Rim/iw7-mod/releases/download/latest/iw7Installer.exe -o iw7Installer.exe && chmod +x iw7Installer.exe && ./iw7Installer.exe -s
+  ```
 
 <a id="installer"></a>
 ### <u>Installer</u>
