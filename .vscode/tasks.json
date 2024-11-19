@@ -45,11 +45,15 @@
                 "🔨 Build Executable",
                 "🔧 Compile Installer"
             ],
+            "dependsOrder": "sequence",
             "problemMatcher": [],
             "group": {
                 "kind": "build",
                 "isDefault": true
             }
+            // "runOptions": {
+            //     "runOn": "folderOpen"
+            // }
         }
     ],
     "inputs": [
