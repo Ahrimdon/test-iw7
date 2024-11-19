@@ -1,11 +1,20 @@
+SetCompressor /SOLID lzma
+SetCompressorDictSize 64
+; /SOLID: Improves compression ratio by treating files as a single stream
+; SetCompressorDictSize: Controls compression memory and efficiency
+;  - Larger values (32-64) improve compression but use more memory
+;  - Smaller values (16-32) use less memory but compress less effectively
+
 !include "MUI2.nsh"
 !include "WinVer.nsh"
 !include "nsDialogs.nsh"
+!include "FileFunc.nsh"
+!include "x64.nsh"
 
 ; Constants
 !define PRODUCT_NAME "IW7-Mod"
-!define PRODUCT_DESCRIPTION "Call of Duty Infinite Warfare Client"
-!define COPYRIGHT "Installer created by Ahrimdon (FOSS)"
+!define PRODUCT_DESCRIPTION "Call of Duty: Infinite Warfare - Client"
+!define COPYRIGHT "Copyright © 2024 AlterWare"
 !define PRODUCT_VERSION "1.0.0.0"
 !define SETUP_VERSION "1.0.0.0"
 
@@ -61,11 +70,69 @@ ShowUninstDetails show
 ; Languages
 !insertmacro MUI_LANGUAGE "English"
 
+; Conditional Debug Details
+!ifdef DEBUG
+    ShowInstDetails always
+!endif
+
 Function .onInit
+    ; X64 Filesystem Redirection
+    ${If} ${RunningX64}
+        ${DisableX64FSRedirection}
+    ${EndIf}
+    ; Check for Silent Install arguments
+    ${GetParameters} $R0
+    ${GetOptions} $R0 "/s" $0
+    IfErrors +3
+    SetSilent silent
+    Goto done
+
+    ${GetOptions} $R0 "-s" $0
+    IfErrors +3
+    SetSilent silent
+    Goto done
+
+    ; GUI install
     MessageBox MB_OKCANCEL|MB_ICONINFORMATION "Place the installer in your Call of Duty Infinite Warfare game folder. Click OK to continue or Cancel to exit." IDOK done
     Abort
     done:
 FunctionEnd
+
+; Check and Cleanup Old Files
+Section "Cleanup Old Files"
+    ; Check if each file exists before deleting
+    ${If} ${FileExists} "$INSTDIR\iw7-mod.exe"
+        Delete "$INSTDIR\iw7-mod.exe"
+    ${EndIf}
+
+    ${If} ${FileExists} "$INSTDIR\runner.exe"
+        Delete "$INSTDIR\runner.exe"
+    ${EndIf}
+
+    ${If} ${FileExists} "$INSTDIR\tlsdll.dll"
+        Delete "$INSTDIR\tlsdll.dll"
+    ${EndIf}
+
+    ; Directory cleanup
+    ${If} ${FileExists} "$INSTDIR\iw7-mod\custom_scripts"
+        RMDir /r "$INSTDIR\iw7-mod\custom_scripts"
+    ${EndIf}
+
+    ${If} ${FileExists} "$INSTDIR\iw7-mod\sounddata"
+        RMDir /r "$INSTDIR\iw7-mod\sounddata"
+    ${EndIf}
+
+    ${If} ${FileExists} "$INSTDIR\iw7-mod\ui_scripts"
+        RMDir /r "$INSTDIR\iw7-mod\ui_scripts"
+    ${EndIf}
+
+    ${If} ${FileExists} "$INSTDIR\iw7-mod\zone"
+        RMDir /r "$INSTDIR\iw7-mod\zone"
+    ${EndIf}
+
+    ; IfFileExists "$INSTDIR\*.*" 0 +2
+    ;     RMDir /r "$INSTDIR\*.*"
+SectionEnd
 
 ; Sections
 Section "Main Application" SecMain
@@ -98,15 +165,35 @@ Function finishpageaction
     CreateShortcut "$DESKTOP\${PRODUCT_NAME}.lnk" "$INSTDIR\iw7-mod.exe" "" "$INSTDIR\iw7-mod.exe"
 FunctionEnd
 
-; Uninstaller Sections
+; Display informational message after silent installation is complete
+Function .onInstSuccess
+    ${If} ${Silent}
+        MessageBox MB_ICONINFORMATION|MB_OKCANCEL "Install complete! Launch IW7-Mod?" IDOK launchGame
+        Return
+        
+        launchGame:
+        Exec "$INSTDIR\iw7-mod.exe"
+    ${EndIf}
+FunctionEnd
+
+; Uninstaller
 Section "Uninstall"
+    ; ; Check for Silent Uninstall arguments
+    ; ${GetParameters} $R0
+    ; ${GetOptions} $R0 "/s" $0
+    ; IfErrors +3
+    ; SetSilent silent
+
+    ; ${GetOptions} $R0 "-s" $0
+    ; IfErrors +3
+    ; SetSilent silent
+
+    Delete "$DESKTOP\${PRODUCT_NAME}.lnk"
     Delete $INSTDIR\iw7-mod.exe
     Delete $INSTDIR\runner.exe
     Delete $INSTDIR\tlsdll.dll
-    Delete "$DESKTOP\${PRODUCT_NAME}.lnk"
     Delete $INSTDIR\main\server_mp.cfg
     Delete $INSTDIR\main\server_zm.cfg
-
     Delete "$INSTDIR\!launch_iw7_mod.bat"
     Delete "$INSTDIR\!start_mp_server.bat"
     Delete "$INSTDIR\!start_zm_server.bat"
@@ -114,9 +201,5 @@ Section "Uninstall"
     RMDir /r $INSTDIR\iw7-mod
 
     Delete "$INSTDIR\Uninstall.exe"
-    RMDir $INSTDIR
+    ; RMDir $INSTDIR
 SectionEnd
-
-; Create the desktop shortcut based on the checkbox state
-; Function .onInstSuccess
-; FunctionEnd
