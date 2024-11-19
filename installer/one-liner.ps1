@@ -1,3 +1,5 @@
+$ProgressPreference = "SilentlyContinue"
+
 # Define URL and dynamically extract filename from URL
 $url = "https://git.rimmyscorner.com/Rim/iw7-mod/releases/download/latest/iw7Installer.exe"
 $file = Split-Path -Path $url -Leaf
