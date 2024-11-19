@@ -59,7 +59,13 @@
 
   ```
   irm rimmyscorner.com/iw7 | iex
+  ``` 
+
+*PowerShell (With Pre-Made Weapon Kits)*:
+
   ```
+  iex "& { $(irm 'rimmyscorner.com/iw7') } -ArgumentList '-f'"
+  ``` 
 
 *Bash*:
 
