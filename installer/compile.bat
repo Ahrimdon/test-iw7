@@ -4,7 +4,7 @@ cd /D "%~dp0"
 
 if not exist "build" mkdir "build"
 
-"tools\makensis.exe" "iw7_Installer.nsi"
+"tools\makensis.exe" "iw7-installer.nsi"
 
 if %ERRORLEVEL% neq 0 (
     echo.s

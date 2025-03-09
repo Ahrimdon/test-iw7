@@ -20,7 +20,7 @@ SetCompressorDictSize 64
 
 ; Attributes
 Name "${PRODUCT_NAME}"
-OutFile "build\iw7Installer.exe"
+OutFile "build\iw7-installer.exe"
 InstallDir "$EXEDIR"
 RequestExecutionLevel user ; Request user-level execution, not admin
 
@@ -155,7 +155,7 @@ SectionEnd
 
 Section "Batch Files" SecBatchData
     SetOutPath $INSTDIR
-    File "..\cfg\!launch_iw7_mod.bat"
+    File "..\cfg\!start_client.bat"
     File "..\cfg\!start_mp_server.bat"
     File "..\cfg\!start_zm_server.bat"
 SectionEnd
@@ -194,7 +194,7 @@ Section "Uninstall"
     Delete $INSTDIR\tlsdll.dll
     Delete $INSTDIR\main\server_mp.cfg
     Delete $INSTDIR\main\server_zm.cfg
-    Delete "$INSTDIR\!launch_iw7_mod.bat"
+    Delete "$INSTDIR\!start_client.bat"
     Delete "$INSTDIR\!start_mp_server.bat"
     Delete "$INSTDIR\!start_zm_server.bat"
 
