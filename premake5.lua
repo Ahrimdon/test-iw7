@@ -388,3 +388,9 @@ dependencies.imports()
 
 group "Dependencies"
 dependencies.projects()
+
+removefiles { "src/client/component/updater.cpp", "src/client/component/updater.hpp" }
+
+-- filter { "configurations:Release", "files:src/client/component/updater.cpp" }
+--     flags { "ExcludeFromBuild" }
+-- filter {}
