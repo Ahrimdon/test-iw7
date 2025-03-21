@@ -74,7 +74,7 @@ BEGIN
             VALUE "FileDescription", "IW7-Mod"
             VALUE "FileVersion", VERSION_FILE
             VALUE "InternalName", "IW7-Mod"
-            VALUE "LegalCopyright", "Copyright (C) 2022 Aurora. All rights reserved."
+            VALUE "LegalCopyright", "Copyright (C) 2025 Aurora. All rights reserved."
             VALUE "Licence", "GPLv3"
             VALUE "Info", "https://git.rimmyscorner.com/Rim/iw7-mod"
             VALUE "OriginalFilename", "iw7-mod.exe"
