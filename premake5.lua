@@ -308,7 +308,7 @@ pchsource "src/client/std_include.cpp"
 linkoptions {"/IGNORE:4254", "/DYNAMICBASE:NO", "/SAFESEH:NO", "/LARGEADDRESSAWARE", "/LAST:.main", "/PDBCompress"}
 
 files {"./src/client/**.rc", "./src/client/**.hpp", "./src/client/**.cpp", "./src/client/resources/**.*"}
-removefiles {"src/client/component/updater.cpp", "src/client/component/updater.hpp", "src/client/component/branding.cpp", "src/client/component/branding.cpp"}
+removefiles {"src/client/component/updater.cpp", "src/client/component/updater.hpp"}
 
 -- filter { "configurations:Release", "files:src/client/component/updater.cpp" }
 -- 		flags { "ExcludeFromBuild" }
@@ -365,9 +365,9 @@ group "Dependencies"
 dependencies.projects()
 
 -- filter "projects:client"
---     removefiles {"src/client/component/updater.cpp", "src/client/component/updater.hpp", "src/client/component/branding.cpp", "src/client/component/branding.cpp"}
+--     removefiles {"src/client/component/updater.cpp", "src/client/component/updater.hpp"}
 -- filter {}
 
--- filter {"projects:client", "configurations:Release", "files:src/client/component/updater.cpp", "src/client/component/branding.cpp"}
+-- filter {"projects:client", "configurations:Release", "files:src/client/component/updater.cpp"}
 --     flags {"ExcludeFromBuild"}
 -- filter {}

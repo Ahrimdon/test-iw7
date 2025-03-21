@@ -18,7 +18,7 @@ namespace dvars
 	game::dvar_t* con_inputDvarInactiveValueColor = nullptr;
 	game::dvar_t* con_inputCmdMatchColor = nullptr;
 
-	game::dvar_t* branding = nullptr;
+	// game::dvar_t* branding = nullptr;
 
 	game::dvar_t* lui_debug = nullptr;
 
