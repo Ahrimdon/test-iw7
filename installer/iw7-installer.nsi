@@ -105,10 +105,6 @@ Section "Cleanup Old Files"
         Delete "$INSTDIR\iw7-mod.exe"
     ${EndIf}
 
-    ${If} ${FileExists} "$INSTDIR\runner.exe"
-        Delete "$INSTDIR\runner.exe"
-    ${EndIf}
-
     ${If} ${FileExists} "$INSTDIR\tlsdll.dll"
         Delete "$INSTDIR\tlsdll.dll"
     ${EndIf}
@@ -138,7 +134,6 @@ SectionEnd
 Section "Main Application" SecMain
     SetOutPath $INSTDIR
     File "..\build\bin\x64\Release\iw7-mod.exe"
-    File "..\build\bin\x64\Release\runner.exe"
     File "..\build\bin\x64\Release\tlsdll.dll"
     WriteUninstaller "$INSTDIR\Uninstall.exe"
 SectionEnd
@@ -190,7 +185,6 @@ Section "Uninstall"
 
     Delete "$DESKTOP\${PRODUCT_NAME}.lnk"
     Delete $INSTDIR\iw7-mod.exe
-    Delete $INSTDIR\runner.exe
     Delete $INSTDIR\tlsdll.dll
     Delete $INSTDIR\main\server_mp.cfg
     Delete $INSTDIR\main\server_zm.cfg
