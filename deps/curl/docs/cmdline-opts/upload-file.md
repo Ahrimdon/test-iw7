@@ -7,7 +7,7 @@ Arg: <file>
 Help: Transfer local FILE to destination
 Category: important upload
 Added: 4.0
-Multi: append
+Multi: per-URL
 See-also:
   - get
   - head
@@ -17,11 +17,12 @@ Example:
   - -T file $URL
   - -T "img[1-1000].png" ftp://ftp.example.com/
   - --upload-file "{file1,file2}" $URL
+  - -T file -T file2 $URL $URL
 ---
 
 # `--upload-file`
 
-This transfers the specified local file to the remote URL.
+Upload the specified local file to the remote URL.
 
 If there is no file part in the specified URL, curl appends the local file
 name to the end of the URL before the operation starts. You must use a

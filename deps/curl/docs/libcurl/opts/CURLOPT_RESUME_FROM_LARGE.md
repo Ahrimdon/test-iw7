@@ -8,6 +8,9 @@ See-also:
   - CURLOPT_INFILESIZE_LARGE (3)
   - CURLOPT_RANGE (3)
   - CURLOPT_RESUME_FROM (3)
+Protocol:
+  - All
+Added-in: 7.11.0
 ---
 
 # NAME
@@ -39,9 +42,7 @@ file to the remote target file.
 
 0, not used
 
-# PROTOCOLS
-
-HTTP, FTP, SFTP, FILE
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -70,9 +71,7 @@ int main(void)
 }
 ~~~
 
-# AVAILABILITY
-
-Added in 7.11.0
+# %AVAILABILITY%
 
 # RETURN VALUE
 

@@ -10,6 +10,9 @@ See-also:
   - CURLOPT_MAXFILESIZE (3)
   - curl_easy_getinfo (3)
   - curl_easy_setopt (3)
+Protocol:
+  - All
+Added-in: 7.55.0
 ---
 
 # NAME
@@ -32,9 +35,7 @@ were downloaded. The amount is only for the latest transfer and gets reset
 again for each new transfer. This counts actual payload data, what's also
 commonly called body. All meta and header data is excluded from this amount.
 
-# PROTOCOLS
-
-All
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -61,9 +62,7 @@ int main(void)
 }
 ~~~
 
-# AVAILABILITY
-
-Added in 7.55.0
+# %AVAILABILITY%
 
 # RETURN VALUE
 

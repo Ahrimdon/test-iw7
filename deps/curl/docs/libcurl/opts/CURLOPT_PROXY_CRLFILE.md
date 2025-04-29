@@ -9,6 +9,13 @@ See-also:
   - CURLOPT_PROXY_SSL_VERIFYPEER (3)
   - CURLOPT_SSL_VERIFYHOST (3)
   - CURLOPT_SSL_VERIFYPEER (3)
+Protocol:
+  - TLS
+TLS-backend:
+  - GnuTLS
+  - mbedTLS
+  - OpenSSL
+Added-in: 7.52.0
 ---
 
 # NAME
@@ -48,13 +55,14 @@ the CRL does not trigger this specific error.
 The application does not have to keep the string around after setting this
 option.
 
+Using this option multiple times makes the last set string override the
+previous ones. Set it to NULL to disable its use again.
+
 # DEFAULT
 
 NULL
 
-# PROTOCOLS
-
-Used with HTTPS proxy.
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -73,9 +81,7 @@ int main(void)
 }
 ~~~
 
-# AVAILABILITY
-
-Added in 7.52.0
+# %AVAILABILITY%
 
 # RETURN VALUE
 

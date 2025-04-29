@@ -7,6 +7,9 @@ Source: libcurl
 See-also:
   - CURLOPT_HTTPHEADER (3)
   - CURLOPT_QUOTE (3)
+Protocol:
+  - TELNET
+Added-in: 7.7
 ---
 
 # NAME
@@ -29,13 +32,17 @@ negotiations. The variables should be in the format \<option=value\>. libcurl
 supports the options **TTYPE**, **XDISPLOC** and **NEW_ENV**. See the TELNET
 standard for details.
 
+Using this option multiple times makes the last set list override the previous
+ones. Set it to NULL to disable its use again.
+
+libcurl does not copy the list, it needs to be kept around until after the
+transfer has completed.
+
 # DEFAULT
 
 NULL
 
-# PROTOCOLS
-
-TELNET
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -57,9 +64,7 @@ int main(void)
 }
 ~~~
 
-# AVAILABILITY
-
-Along with TELNET
+# %AVAILABILITY%
 
 # RETURN VALUE
 

@@ -7,6 +7,9 @@ Source: libcurl
 See-also:
   - CURLOPT_PROGRESSFUNCTION (3)
   - CURLOPT_XFERINFOFUNCTION (3)
+Protocol:
+  - All
+Added-in: 7.1
 ---
 
 # NAME
@@ -28,11 +31,9 @@ argument in the progress callback set with CURLOPT_PROGRESSFUNCTION(3).
 
 # DEFAULT
 
-The default value of this parameter is NULL.
+NULL
 
-# PROTOCOLS
-
-All
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -71,9 +72,7 @@ int main(void)
 }
 ~~~
 
-# AVAILABILITY
-
-Always
+# %AVAILABILITY%
 
 # RETURN VALUE
 

@@ -7,6 +7,9 @@ Source: libcurl
 See-also:
   - CURLOPT_MAIL_FROM (3)
   - CURLOPT_MAIL_RCPT (3)
+Protocol:
+  - SMTP
+Added-in: 8.2.0
 ---
 
 # NAME
@@ -42,9 +45,7 @@ RCPT TO command.
 
 0
 
-# PROTOCOLS
-
-SMTP
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -70,11 +71,12 @@ int main(void)
 }
 ~~~
 
-# AVAILABILITY
+# HISTORY
 
-This option was called CURLOPT_MAIL_RCPT_ALLLOWFAILS before 8.2.0
+This option was called CURLOPT_MAIL_RCPT_ALLLOWFAILS (with three instead of
+two letter L) before 8.2.0
 
-Added in 7.69.0.
+# %AVAILABILITY%
 
 # RETURN VALUE
 

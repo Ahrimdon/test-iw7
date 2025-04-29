@@ -4,11 +4,14 @@ SPDX-License-Identifier: curl
 Title: CURLOPT_HSTS_CTRL
 Section: 3
 Source: libcurl
+Protocol:
+  - HTTP
 See-also:
   - CURLOPT_ALTSVC (3)
   - CURLOPT_CONNECT_TO (3)
   - CURLOPT_HSTS (3)
   - CURLOPT_RESOLVE (3)
+Added-in: 7.74.0
 ---
 
 # NAME
@@ -50,11 +53,9 @@ to the file when closing the handle.
 
 # DEFAULT
 
-0. HSTS is disabled by default.
+0
 
-# PROTOCOLS
-
-HTTPS and HTTP
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -69,9 +70,7 @@ int main(void)
 }
 ~~~
 
-# AVAILABILITY
-
-Added in 7.74.0
+# %AVAILABILITY%
 
 # RETURN VALUE
 

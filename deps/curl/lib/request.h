@@ -32,6 +32,9 @@
 
 /* forward declarations */
 struct UserDefined;
+#ifndef CURL_DISABLE_DOH
+struct doh_probes;
+#endif
 
 enum expect100 {
   EXP100_SEND_DATA,           /* enough waiting, just send the body now */
@@ -51,10 +54,10 @@ enum upgrade101 {
 
 
 /*
- * Request specific data in the easy handle (Curl_easy).  Previously,
+ * Request specific data in the easy handle (Curl_easy). Previously,
  * these members were on the connectdata struct but since a conn struct may
  * now be shared between different Curl_easys, we store connection-specific
- * data here. This struct only keeps stuff that's interesting for *this*
+ * data here. This struct only keeps stuff that is interesting for *this*
  * request, as it will be cleared between multiple ones
  */
 struct SingleRequest {
@@ -68,7 +71,7 @@ struct SingleRequest {
   unsigned int headerbytecount;  /* received server headers (not CONNECT
                                     headers) */
   unsigned int allheadercount;   /* all received headers (server + CONNECT) */
-  unsigned int deductheadercount; /* this amount of bytes doesn't count when
+  unsigned int deductheadercount; /* this amount of bytes does not count when
                                      we check if anything has been transferred
                                      at the end of a connection. We use this
                                      counter to make only a 100 reply (without
@@ -78,11 +81,10 @@ struct SingleRequest {
                                    first one */
   curl_off_t offset;            /* possible resume offset read from the
                                    Content-Range: header */
+  int httpversion;              /* Version in response (09, 10, 11, etc.) */
   int httpcode;                 /* error code from the 'HTTP/1.? XXX' or
                                    'RTSP/1.? XXX' line */
   int keepon;
-  struct curltime start100;      /* time stamp to wait for the 100 code from */
-  enum expect100 exp100;        /* expect 100 continue state */
   enum upgrade101 upgr101;      /* 101 upgrade state */
 
   /* Client Writer stack, handles transfer- and content-encodings, protocol
@@ -94,7 +96,6 @@ struct SingleRequest {
   struct bufq sendbuf; /* data which needs to be send to the server */
   size_t sendbuf_hds_len; /* amount of header bytes in sendbuf */
   time_t timeofdoc;
-  long bodywrites;
   char *location;   /* This points to an allocated version of the Location:
                        header data */
   char *newurl;     /* Set to the new URL to use when a redirect or a retry is
@@ -105,7 +106,6 @@ struct SingleRequest {
   union {
     struct FILEPROTO *file;
     struct FTP *ftp;
-    struct HTTP *http;
     struct IMAP *imap;
     struct ldapreqinfo *ldap;
     struct MQTT *mqtt;
@@ -117,16 +117,20 @@ struct SingleRequest {
     struct TELNET *telnet;
   } p;
 #ifndef CURL_DISABLE_DOH
-  struct dohdata *doh; /* DoH specific data for this request */
+  struct doh_probes *doh; /* DoH specific data for this request */
 #endif
 #ifndef CURL_DISABLE_COOKIES
   unsigned char setcookies;
 #endif
   BIT(header);        /* incoming data has HTTP header */
+  BIT(done);          /* request is done, e.g. no more send/recv should
+                       * happen. This can be TRUE before `upload_done` or
+                       * `download_done` is TRUE. */
   BIT(content_range); /* set TRUE if Content-Range: was found */
   BIT(download_done); /* set to TRUE when download is complete */
   BIT(eos_written);   /* iff EOS has been written to client */
   BIT(eos_read);      /* iff EOS has been read from the client */
+  BIT(eos_sent);      /* iff EOS has been sent to the server */
   BIT(rewind_read);   /* iff reader needs rewind at next start */
   BIT(upload_done);   /* set to TRUE when all request data has been sent */
   BIT(upload_aborted); /* set to TRUE when upload was aborted. Will also
@@ -135,6 +139,7 @@ struct SingleRequest {
   BIT(http_bodyless); /* HTTP response status code is between 100 and 199,
                          204 or 304 */
   BIT(chunk);         /* if set, this is a chunked transfer-encoding */
+  BIT(resp_trailer);  /* response carried 'Trailer:' header field */
   BIT(ignore_cl);     /* ignore content-length */
   BIT(upload_chunky); /* set TRUE if we are doing chunked transfer-encoding
                          on upload */
@@ -145,18 +150,30 @@ struct SingleRequest {
                         but it is not the final request in the auth
                         negotiation. */
   BIT(sendbuf_init); /* sendbuf is initialized */
+  BIT(shutdown);     /* request end will shutdown connection */
+  BIT(shutdown_err_ignore); /* errors in shutdown will not fail request */
+#ifdef USE_HYPER
+  BIT(bodywritten);
+#endif
 };
 
 /**
  * Initialize the state of the request for first use.
  */
-CURLcode Curl_req_init(struct SingleRequest *req);
+void Curl_req_init(struct SingleRequest *req);
 
 /**
- * The request is about to start.
+ * The request is about to start. Record time and do a soft reset.
  */
 CURLcode Curl_req_start(struct SingleRequest *req,
                         struct Curl_easy *data);
+
+/**
+ * The request may continue with a follow up. Reset
+ * members, but keep start time for overall duration calc.
+ */
+CURLcode Curl_req_soft_reset(struct SingleRequest *req,
+                             struct Curl_easy *data);
 
 /**
  * The request is done. If not aborted, make sure that buffers are
@@ -174,10 +191,10 @@ CURLcode Curl_req_done(struct SingleRequest *req,
 void Curl_req_free(struct SingleRequest *req, struct Curl_easy *data);
 
 /**
- * Reset the state of the request for new use, given the
- * settings.
+ * Hard reset the state of the request to virgin state base on
+ * transfer settings.
  */
-void Curl_req_reset(struct SingleRequest *req, struct Curl_easy *data);
+void Curl_req_hard_reset(struct SingleRequest *req, struct Curl_easy *data);
 
 #ifndef USE_HYPER
 /**
@@ -210,9 +227,25 @@ CURLcode Curl_req_send_more(struct Curl_easy *data);
 bool Curl_req_want_send(struct Curl_easy *data);
 
 /**
+ * TRUE iff the request has no buffered bytes yet to send.
+ */
+bool Curl_req_sendbuf_empty(struct Curl_easy *data);
+
+/**
  * Stop sending any more request data to the server.
  * Will clear the send buffer and mark request sending as done.
  */
 CURLcode Curl_req_abort_sending(struct Curl_easy *data);
+
+/**
+ * Stop sending and receiving any more request data.
+ * Will abort sending if not done.
+ */
+CURLcode Curl_req_stop_send_recv(struct Curl_easy *data);
+
+/**
+ * Invoked when all request data has been uploaded.
+ */
+CURLcode Curl_req_set_upload_done(struct Curl_easy *data);
 
 #endif /* HEADER_CURL_REQUEST_H */

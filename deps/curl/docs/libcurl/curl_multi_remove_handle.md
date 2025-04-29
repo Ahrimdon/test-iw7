@@ -8,6 +8,9 @@ See-also:
   - curl_multi_add_handle (3)
   - curl_multi_cleanup (3)
   - curl_multi_init (3)
+Protocol:
+  - All
+Added-in: 7.9.6
 ---
 
 # NAME
@@ -44,6 +47,8 @@ libcurl keeps the connection alive in the connection pool associated with the
 multi handle, ready to get reused for a future transfer using this multi
 handle.
 
+# %PROTOCOLS%
+
 # EXAMPLE
 
 ~~~c
@@ -64,9 +69,7 @@ int main(void)
 }
 ~~~
 
-# AVAILABILITY
-
-Added in 7.9.6
+# %AVAILABILITY%
 
 # RETURN VALUE
 

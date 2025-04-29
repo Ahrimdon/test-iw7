@@ -8,6 +8,9 @@ See-also:
   - libcurl (3)
   - libcurl-easy (3)
   - libcurl-errors (3)
+Protocol:
+  - All
+Added-in: 7.9.6
 ---
 
 # NAME

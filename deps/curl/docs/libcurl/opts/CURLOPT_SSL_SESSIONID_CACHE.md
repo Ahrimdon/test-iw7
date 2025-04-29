@@ -9,6 +9,11 @@ See-also:
   - CURLOPT_MAXAGE_CONN (3)
   - CURLOPT_MAXLIFETIME_CONN (3)
   - CURLOPT_SSLVERSION (3)
+Protocol:
+  - TLS
+TLS-backend:
+  - All
+Added-in: 7.16.0
 ---
 
 # NAME
@@ -36,9 +41,7 @@ wild that may require you to disable this in order for you to succeed.
 
 1
 
-# PROTOCOLS
-
-All TLS-based
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -49,7 +52,7 @@ int main(void)
   if(curl) {
     CURLcode res;
     curl_easy_setopt(curl, CURLOPT_URL, "https://example.com/");
-    /* switch off session-id use! */
+    /* switch off session-id use */
     curl_easy_setopt(curl, CURLOPT_SSL_SESSIONID_CACHE, 0L);
     res = curl_easy_perform(curl);
     curl_easy_cleanup(curl);
@@ -57,9 +60,7 @@ int main(void)
 }
 ~~~
 
-# AVAILABILITY
-
-Added in 7.16.0
+# %AVAILABILITY%
 
 # RETURN VALUE
 

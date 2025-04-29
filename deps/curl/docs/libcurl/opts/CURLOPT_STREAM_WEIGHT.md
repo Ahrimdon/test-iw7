@@ -9,6 +9,9 @@ See-also:
   - CURLOPT_PIPEWAIT (3)
   - CURLOPT_STREAM_DEPENDS (3)
   - CURLOPT_STREAM_DEPENDS_E (3)
+Protocol:
+  - HTTP
+Added-in: 7.46.0
 ---
 
 # NAME
@@ -45,12 +48,9 @@ streams).
 
 # DEFAULT
 
-If nothing is set, the HTTP/2 protocol itself uses its own default which is
-16.
+16
 
-# PROTOCOLS
-
-HTTP/2
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -67,14 +67,12 @@ int main(void)
     curl_easy_setopt(curl2, CURLOPT_URL, "https://example.com/two");
     curl_easy_setopt(curl2, CURLOPT_STREAM_WEIGHT, 20L);
 
-    /* then add both to a multi handle and transfer them! */
+    /* then add both to a multi handle and transfer them */
   }
 }
 ~~~
 
-# AVAILABILITY
-
-Added in 7.46.0
+# %AVAILABILITY%
 
 # RETURN VALUE
 

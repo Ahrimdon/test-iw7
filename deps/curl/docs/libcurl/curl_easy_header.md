@@ -10,6 +10,9 @@ See-also:
   - curl_easy_nextheader (3)
   - curl_easy_perform (3)
   - libcurl-errors (3)
+Protocol:
+  - HTTP
+Added-in: 7.83.0
 ---
 
 # NAME
@@ -62,7 +65,7 @@ does not have to bother about multiple headers used wrongly.
 
 The memory for the returned struct is associated with the easy handle and
 subsequent calls to curl_easy_header(3) clobber the struct used in the
-previous calls for the same easy handle. Applications need to copy the data if
+previous calls for the same easy handle. The application needs to copy the data if
 it wants to keep it around. The memory used for the struct gets freed with
 calling curl_easy_cleanup(3) of the easy handle.
 
@@ -134,6 +137,8 @@ response that might happen before the "real" response.
 
 The header is an HTTP/2 or HTTP/3 pseudo header
 
+# %PROTOCOLS%
+
 # EXAMPLE
 
 ~~~c
@@ -151,9 +156,7 @@ int main(void)
 }
 ~~~
 
-# AVAILABILITY
-
-Added in 7.83.0. Officially supported since 7.84.0.
+# %AVAILABILITY%
 
 # RETURN VALUE
 

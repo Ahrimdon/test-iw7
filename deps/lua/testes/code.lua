@@ -412,13 +412,22 @@ checkequal(function (l) local a; return 0 <= a and a <= l end,
            function (l) local a; return not (not(a >= 0) or not(a <= l)) end)
 
 
--- if-break optimizations
 check(function (a, b)
         while a do
           if b then break else a = a + 1 end
         end
       end,
-'TEST', 'JMP', 'TEST', 'JMP', 'ADDI', 'MMBINI', 'JMP', 'RETURN0')
+'TEST', 'JMP', 'TEST', 'JMP', 'JMP', 'CLOSE', 'JMP', 'ADDI', 'MMBINI', 'JMP', 'RETURN0')
+
+check(function ()
+        do
+          goto exit   -- don't need to close
+          local x <close> = nil
+          goto exit   -- must close
+        end
+        ::exit::
+      end, 'JMP', 'CLOSE', 'LOADNIL', 'TBC',
+           'CLOSE', 'JMP', 'CLOSE', 'RETURN')
 
 checkequal(function () return 6 or true or nil end,
            function () return k6 or kTrue or kNil end)
@@ -443,6 +452,32 @@ do   -- string constants
   -- string is not needed by other functions
   assert(T.listk(f1)[1] == nil)
   assert(T.listk(f2)[1] == nil)
+end
+
+
+do   -- check number of available registers
+  -- 1 register for local + 1 for function + 252 arguments
+  local source = "local a; return a(" .. string.rep("a, ", 252) .. "a)"
+  local prog = T.listcode(assert(load(source)))
+  -- maximum valid register is 254
+  for i = 1, 254 do
+    assert(string.find(prog[2 + i], "MOVE%s*" .. i))
+  end
+  -- one more argument would need register #255 (but that is reserved)
+  source = "local a; return a(" .. string.rep("a, ", 253) .. "a)"
+  local _, msg = load(source)
+  assert(string.find(msg, "too many registers"))
+end
+
+
+do   -- basic check for SETLIST
+  -- create a list constructor with 50 elements
+  local source = "local a; return {" .. string.rep("a, ", 50) .. "}"
+  local func = assert(load(source))
+  local code = table.concat(T.listcode(func), "\n")
+  local _, count = string.gsub(code, "SETLIST", "")
+  -- code uses only 1 SETLIST for the constructor
+  assert(count == 1)
 end
 
 print 'OK'

@@ -9,6 +9,9 @@ See-also:
   - CURLINFO_REFERER (3)
   - CURLOPT_HTTPHEADER (3)
   - CURLOPT_USERAGENT (3)
+Protocol:
+  - HTTP
+Added-in: 7.1
 ---
 
 # NAME
@@ -32,13 +35,14 @@ set any custom header with CURLOPT_HTTPHEADER(3).
 The application does not have to keep the string around after setting this
 option.
 
+Using this option multiple times makes the last set string override the
+previous ones. Set it to NULL to disable its use again.
+
 # DEFAULT
 
 NULL
 
-# PROTOCOLS
-
-HTTP
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -57,9 +61,7 @@ int main(void)
 }
 ~~~
 
-# AVAILABILITY
-
-If built with HTTP support
+# %AVAILABILITY%
 
 # RETURN VALUE
 

@@ -8,6 +8,12 @@ See-also:
   - CURLOPT_CRLFILE (3)
   - CURLOPT_SSL_VERIFYHOST (3)
   - CURLOPT_SSL_VERIFYPEER (3)
+Protocol:
+  - TLS
+TLS-backend:
+  - OpenSSL
+  - GnuTLS
+Added-in: 7.19.0
 ---
 
 # NAME
@@ -40,6 +46,9 @@ which is returned if the setup of the SSL/TLS session has failed due to a
 mismatch with the issuer of peer certificate (CURLOPT_SSL_VERIFYPEER(3)
 has to be set too for the check to fail). (Added in 7.19.0)
 
+Using this option multiple times makes the last set string override the
+previous ones. Set it to NULL to disable its use again.
+
 The application does not have to keep the string around after setting this
 option.
 
@@ -47,9 +56,7 @@ option.
 
 NULL
 
-# PROTOCOLS
-
-All TLS-based protocols
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -67,9 +74,7 @@ int main(void)
 }
 ~~~
 
-# AVAILABILITY
-
-If built TLS enabled
+# %AVAILABILITY%
 
 # RETURN VALUE
 

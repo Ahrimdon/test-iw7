@@ -7,6 +7,9 @@ Source: libcurl
 See-also:
   - CURLOPT_MAIL_AUTH (3)
   - CURLOPT_MAIL_RCPT (3)
+Protocol:
+  - SMTP
+Added-in: 7.20.0
 ---
 
 # NAME
@@ -35,13 +38,14 @@ server which might cause the email to be rejected.
 The application does not have to keep the string around after setting this
 option.
 
+Using this option multiple times makes the last set string override the
+previous ones. Set it to NULL to disable its use again.
+
 # DEFAULT
 
 blank
 
-# PROTOCOLS
-
-SMTP
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -59,9 +63,7 @@ int main(void)
 }
 ~~~
 
-# AVAILABILITY
-
-Added in 7.20.0
+# %AVAILABILITY%
 
 # RETURN VALUE
 

@@ -188,10 +188,19 @@ typedef union {
 /* Value returned for a key not found in a table (absent key) */
 #define LUA_VABSTKEY	makevariant(LUA_TNIL, 2)
 
+/* Special variant to signal that a fast get is accessing a non-table */
+#define LUA_VNOTABLE    makevariant(LUA_TNIL, 3)
+
 
 /* macro to test for (any kind of) nil */
 #define ttisnil(v)		checktype((v), LUA_TNIL)
 
+/*
+** Macro to test the result of a table access. Formally, it should
+** distinguish between LUA_VEMPTY/LUA_VABSTKEY/LUA_VNOTABLE and
+** other tags. As currently nil is equivalent to LUA_VEMPTY, it is
+** simpler to just test whether the value is nil.
+*/
 #define tagisempty(tag)		(novariant(tag) == LUA_TNIL)
 
 
@@ -247,6 +256,8 @@ typedef union {
 
 
 #define l_isfalse(o)	(ttisfalse(o) || ttisnil(o))
+#define tagisfalse(t)	((t) == LUA_VFALSE || novariant(t) == LUA_TNIL)
+
 
 
 #define setbfvalue(obj)		settt_(obj, LUA_VFALSE)
@@ -421,13 +432,13 @@ typedef struct TString {
 
 /* get string length from 'TString *ts' */
 #define tsslen(ts)  \
-	(strisshr(ts) ? cast_uint((ts)->shrlen) : (ts)->u.lnglen)
+	(strisshr(ts) ? cast_sizet((ts)->shrlen) : (ts)->u.lnglen)
 
 /*
 ** Get string and length */
 #define getlstr(ts, len)  \
 	(strisshr(ts) \
-	? (cast_void((len) = (ts)->shrlen), rawgetshrstr(ts)) \
+	? (cast_void((len) = cast_sizet((ts)->shrlen)), rawgetshrstr(ts)) \
 	: (cast_void((len) = (ts)->u.lnglen), (ts)->contents))
 
 /* }================================================================== */
@@ -506,8 +517,8 @@ typedef struct Udata0 {
 
 /* compute the offset of the memory area of a userdata */
 #define udatamemoffset(nuv) \
-	((nuv) == 0 ? offsetof(Udata0, bindata)  \
-                    : offsetof(Udata, uv) + (sizeof(UValue) * (nuv)))
+       ((nuv) == 0 ? offsetof(Udata0, bindata)  \
+		   : offsetof(Udata, uv) + (sizeof(UValue) * (nuv)))
 
 /* get the address of the memory block inside 'Udata' */
 #define getudatamem(u)	(cast_charp(u) + udatamemoffset((u)->nuvalue))
@@ -525,6 +536,9 @@ typedef struct Udata0 {
 */
 
 #define LUA_VPROTO	makevariant(LUA_TPROTO, 0)
+
+
+typedef l_uint32 Instruction;
 
 
 /*
@@ -736,10 +750,9 @@ typedef union Node {
 
 
 /* copy a value into a key */
-#define setnodekey(L,node,obj) \
+#define setnodekey(node,obj) \
 	{ Node *n_=(node); const TValue *io_=(obj); \
-	  n_->u.key_val = io_->value_; n_->u.key_tt = io_->tt_; \
-	  checkliveness(L,io_); }
+	  n_->u.key_val = io_->value_; n_->u.key_tt = io_->tt_; }
 
 
 /* copy a value from a key */
@@ -749,28 +762,13 @@ typedef union Node {
 	  checkliveness(L,io_); }
 
 
-/*
-** About 'alimit': if 'isrealasize(t)' is true, then 'alimit' is the
-** real size of 'array'. Otherwise, the real size of 'array' is the
-** smallest power of two not smaller than 'alimit' (or zero iff 'alimit'
-** is zero); 'alimit' is then used as a hint for #t.
-*/
-
-#define BITRAS		(1 << 7)
-#define isrealasize(t)		(!((t)->flags & BITRAS))
-#define setrealasize(t)		((t)->flags &= cast_byte(~BITRAS))
-#define setnorealasize(t)	((t)->flags |= BITRAS)
-
-
-typedef struct ArrayCell ArrayCell;
-
 
 typedef struct Table {
   CommonHeader;
   lu_byte flags;  /* 1<<p means tagmethod(p) is not present */
-  lu_byte lsizenode;  /* log2 of size of 'node' array */
-  unsigned int alimit;  /* "limit" of 'array' array */
-  ArrayCell *array;  /* array part */
+  lu_byte lsizenode;  /* log2 of number of slots of 'node' array */
+  unsigned int asize;  /* number of slots in 'array' array */
+  Value *array;  /* array part */
   Node *node;
   struct Table *metatable;
   GCObject *gclist;
@@ -814,10 +812,10 @@ typedef struct Table {
 ** 'module' operation for hashing (size is always a power of 2)
 */
 #define lmod(s,size) \
-	(check_exp((size&(size-1))==0, (cast_int((s) & ((size)-1)))))
+	(check_exp((size&(size-1))==0, (cast_uint(s) & cast_uint((size)-1))))
 
 
-#define twoto(x)	(1<<(x))
+#define twoto(x)	(1u<<(x))
 #define sizenode(t)	(twoto((t)->lsizenode))
 
 
@@ -825,16 +823,17 @@ typedef struct Table {
 #define UTF8BUFFSZ	8
 
 LUAI_FUNC int luaO_utf8esc (char *buff, unsigned long x);
-LUAI_FUNC int luaO_ceillog2 (unsigned int x);
-LUAI_FUNC unsigned int luaO_codeparam (unsigned int p);
-LUAI_FUNC l_obj luaO_applyparam (unsigned int p, l_obj x);
+LUAI_FUNC lu_byte luaO_ceillog2 (unsigned int x);
+LUAI_FUNC lu_byte luaO_codeparam (unsigned int p);
+LUAI_FUNC l_mem luaO_applyparam (lu_byte p, l_mem x);
 
 LUAI_FUNC int luaO_rawarith (lua_State *L, int op, const TValue *p1,
                              const TValue *p2, TValue *res);
 LUAI_FUNC void luaO_arith (lua_State *L, int op, const TValue *p1,
                            const TValue *p2, StkId res);
 LUAI_FUNC size_t luaO_str2num (const char *s, TValue *o);
-LUAI_FUNC int luaO_hexavalue (int c);
+LUAI_FUNC unsigned luaO_tostringbuff (const TValue *obj, char *buff);
+LUAI_FUNC lu_byte luaO_hexavalue (int c);
 LUAI_FUNC void luaO_tostring (lua_State *L, TValue *obj);
 LUAI_FUNC const char *luaO_pushvfstring (lua_State *L, const char *fmt,
                                                        va_list argp);

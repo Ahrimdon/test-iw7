@@ -19,13 +19,13 @@ Example:
 
 # `--cert`
 
-Tells curl to use the specified client certificate file when getting a file
-with HTTPS, FTPS or another SSL-based protocol. The certificate must be in
-PKCS#12 format if using Secure Transport, or PEM format if using any other
-engine. If the optional password is not specified, it is queried for on
-the terminal. Note that this option assumes a certificate file that is the
-private key and the client certificate concatenated. See --cert and --key to
-specify them independently.
+Use the specified client certificate file when getting a file with HTTPS, FTPS
+or another SSL-based protocol. The certificate must be in PKCS#12 format if
+using Secure Transport, or PEM format if using any other engine. If the
+optional password is not specified, it is queried for on the terminal. Note
+that this option assumes a certificate file that is the private key and the
+client certificate concatenated. See --cert and --key to specify them
+independently.
 
 In the \<certificate\> portion of the argument, you must escape the character
 `:` as `\:` so that it is not recognized as the password delimiter. Similarly,
@@ -38,6 +38,10 @@ a PKCS#11 device. A string beginning with `pkcs11:` is interpreted as a
 PKCS#11 URI. If a PKCS#11 URI is provided, then the --engine option is set as
 `pkcs11` if none was provided and the --cert-type option is set as `ENG` if
 none was provided.
+
+If curl is built against GnuTLS library, a PKCS#11 URI can be used to specify
+a certificate located in a PKCS#11 device. A string beginning with `pkcs11:`
+is interpreted as a PKCS#11 URI.
 
 (iOS and macOS only) If curl is built against Secure Transport, then the
 certificate string can either be the name of a certificate/private key in the

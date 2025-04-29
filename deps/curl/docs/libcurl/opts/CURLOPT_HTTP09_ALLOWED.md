@@ -4,9 +4,12 @@ SPDX-License-Identifier: curl
 Title: CURLOPT_HTTP09_ALLOWED
 Section: 3
 Source: libcurl
+Protocol:
+  - HTTP
 See-also:
   - CURLOPT_HTTP_VERSION (3)
   - CURLOPT_SSLVERSION (3)
+Added-in: 7.64.0
 ---
 
 # NAME
@@ -27,18 +30,13 @@ Pass the long argument *allowed* set to 1L to allow HTTP/0.9 responses.
 
 An HTTP/0.9 response is a server response entirely without headers and only a
 body. You can connect to lots of random TCP services and still get a response
-that curl might consider to be HTTP/0.9!
+that curl might consider to be HTTP/0.9.
 
 # DEFAULT
 
-curl allowed HTTP/0.9 responses by default before 7.66.0
+0
 
-Since 7.66.0, libcurl requires this option set to 1L to allow HTTP/0.9
-responses.
-
-# PROTOCOLS
-
-HTTP
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -55,9 +53,14 @@ int main(void)
 }
 ~~~
 
-# AVAILABILITY
+# HISTORY
 
-Option added in 7.64.0, present along with HTTP.
+curl allowed HTTP/0.9 responses by default before 7.66.0
+
+Since 7.66.0, libcurl requires this option set to 1L to allow HTTP/0.9
+responses.
+
+# %AVAILABILITY%
 
 # RETURN VALUE
 

@@ -7,6 +7,12 @@ Source: libcurl
 See-also:
   - CURLOPT_SSLKEY (3)
   - CURLOPT_SSLKEYTYPE (3)
+Protocol:
+  - TLS
+TLS-backend:
+  - OpenSSL
+  - wolfSSL
+Added-in: 7.71.0
 ---
 
 # NAME
@@ -39,9 +45,7 @@ filename as input.
 
 NULL
 
-# PROTOCOLS
-
-All TLS based protocols: HTTPS, FTPS, IMAPS, POP3S, SMTPS etc.
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -77,9 +81,7 @@ int main(void)
 }
 ~~~
 
-# AVAILABILITY
-
-Added in 7.71.0. This option is supported by the OpenSSL backends.
+# %AVAILABILITY%
 
 # RETURN VALUE
 

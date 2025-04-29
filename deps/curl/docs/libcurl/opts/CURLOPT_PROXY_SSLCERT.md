@@ -8,6 +8,16 @@ See-also:
   - CURLOPT_PROXY_SSLCERTTYPE (3)
   - CURLOPT_PROXY_SSLKEY (3)
   - CURLOPT_SSLCERT (3)
+Protocol:
+  - TLS
+TLS-backend:
+  - OpenSSL
+  - GnuTLS
+  - mbedTLS
+  - Schannel
+  - Secure Transport
+  - wolfSSL
+Added-in: 7.52.0
 ---
 
 # NAME
@@ -42,13 +52,14 @@ private key with CURLOPT_PROXY_SSLKEY(3).
 The application does not have to keep the string around after setting this
 option.
 
+Using this option multiple times makes the last set string override the
+previous ones. Set it to NULL to disable its use again.
+
 # DEFAULT
 
 NULL
 
-# PROTOCOLS
-
-Used with HTTPS proxy
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -69,9 +80,7 @@ int main(void)
 }
 ~~~
 
-# AVAILABILITY
-
-Added in 7.52.0
+# %AVAILABILITY%
 
 # RETURN VALUE
 

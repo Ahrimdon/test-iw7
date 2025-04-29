@@ -8,6 +8,11 @@ See-also:
   - CURLOPT_FTP_CREATE_MISSING_DIRS (3)
   - CURLOPT_NEW_FILE_PERMS (3)
   - CURLOPT_UPLOAD (3)
+Protocol:
+  - SFTP
+  - SCP
+  - FILE
+Added-in: 7.16.4
 ---
 
 # NAME
@@ -34,9 +39,7 @@ this are *sftp://*, *scp://*, and *file://*.
 
 0755
 
-# PROTOCOLS
-
-SFTP, SCP and FILE
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -55,9 +58,7 @@ int main(void)
 }
 ~~~
 
-# AVAILABILITY
-
-Added in 7.16.4
+# %AVAILABILITY%
 
 # RETURN VALUE
 

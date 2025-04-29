@@ -9,6 +9,9 @@ See-also:
   - CURLOPT_HTTP_VERSION (3)
   - CURLOPT_STREAM_DEPENDS_E (3)
   - CURLOPT_STREAM_WEIGHT (3)
+Protocol:
+  - HTTP
+Added-in: 7.46.0
 ---
 
 # NAME
@@ -45,9 +48,7 @@ option to have an actual effect.
 
 NULL
 
-# PROTOCOLS
-
-HTTP/2
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -63,14 +64,12 @@ int main(void)
     curl_easy_setopt(curl2, CURLOPT_URL, "https://example.com/two");
     curl_easy_setopt(curl2, CURLOPT_STREAM_DEPENDS, curl);
 
-    /* then add both to a multi handle and transfer them! */
+    /* then add both to a multi handle and transfer them */
   }
 }
 ~~~
 
-# AVAILABILITY
-
-Added in 7.46.0
+# %AVAILABILITY%
 
 # RETURN VALUE
 

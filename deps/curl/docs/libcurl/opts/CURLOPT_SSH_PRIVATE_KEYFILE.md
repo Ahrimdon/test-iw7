@@ -7,6 +7,10 @@ Source: libcurl
 See-also:
   - CURLOPT_SSH_AUTH_TYPES (3)
   - CURLOPT_SSH_PUBLIC_KEYFILE (3)
+Protocol:
+  - SFTP
+  - SCP
+Added-in: 7.16.1
 ---
 
 # NAME
@@ -44,9 +48,7 @@ option.
 
 As explained above
 
-# PROTOCOLS
-
-SFTP and SCP
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -66,9 +68,7 @@ int main(void)
 }
 ~~~
 
-# AVAILABILITY
-
-Added in 7.16.1
+# %AVAILABILITY%
 
 # RETURN VALUE
 

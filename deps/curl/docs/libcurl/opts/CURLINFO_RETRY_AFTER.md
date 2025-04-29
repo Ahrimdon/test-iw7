@@ -8,6 +8,9 @@ See-also:
   - CURLOPT_HEADERFUNCTION (3)
   - CURLOPT_STDERR (3)
   - curl_easy_header (3)
+Protocol:
+  - All
+Added-in: 7.66.0
 ---
 
 # NAME
@@ -35,11 +38,9 @@ or zero if there was no header or the header could not be parsed.
 
 # DEFAULT
 
-Returns zero delay if there was no header.
+Zero if there was no header.
 
-# PROTOCOLS
-
-HTTP(S)
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -62,9 +63,7 @@ int main(void)
 }
 ~~~
 
-# AVAILABILITY
-
-Added in 7.66.0
+# %AVAILABILITY%
 
 # RETURN VALUE
 

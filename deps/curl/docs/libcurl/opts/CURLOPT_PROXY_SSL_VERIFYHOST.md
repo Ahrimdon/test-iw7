@@ -9,6 +9,11 @@ See-also:
   - CURLOPT_PROXY_CAINFO (3)
   - CURLOPT_PROXY_SSL_VERIFYPEER (3)
   - CURLOPT_SSL_VERIFYPEER (3)
+Protocol:
+  - TLS
+TLS-backend:
+  - All
+Added-in: 7.52.0
 ---
 
 # NAME
@@ -51,7 +56,7 @@ an error and leaving the flag untouched.
 From 7.66.0: treats 1 and 2 the same.
 
 When the *verify* value is 0L, the connection succeeds regardless of the
-names used in the certificate. Use that ability with caution!
+names used in the certificate. Use that ability with caution.
 
 See also CURLOPT_PROXY_SSL_VERIFYPEER(3) to verify the digital signature
 of the proxy certificate.
@@ -60,9 +65,7 @@ of the proxy certificate.
 
 2
 
-# PROTOCOLS
-
-All protocols when used over an HTTPS proxy.
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -81,11 +84,7 @@ int main(void)
 }
 ~~~
 
-# AVAILABILITY
-
-Added in 7.52.0.
-
-If built TLS enabled.
+# %AVAILABILITY%
 
 # RETURN VALUE
 

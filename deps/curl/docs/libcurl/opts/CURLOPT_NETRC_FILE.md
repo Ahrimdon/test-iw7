@@ -8,6 +8,9 @@ See-also:
   - CURLOPT_NETRC (3)
   - CURLOPT_PASSWORD (3)
   - CURLOPT_USERNAME (3)
+Protocol:
+  - All
+Added-in: 7.11.0
 ---
 
 # NAME
@@ -32,13 +35,14 @@ for a .netrc file in the current user's home directory.
 The application does not have to keep the string around after setting this
 option.
 
+Using this option multiple times makes the last set string override the
+previous ones. Set it to NULL to disable its use again.
+
 # DEFAULT
 
 NULL
 
-# PROTOCOLS
-
-All
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -56,9 +60,7 @@ int main(void)
 }
 ~~~
 
-# AVAILABILITY
-
-Added in 7.10.9
+# %AVAILABILITY%
 
 # RETURN VALUE
 

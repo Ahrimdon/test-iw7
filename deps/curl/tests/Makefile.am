@@ -22,7 +22,14 @@
 #
 ###########################################################################
 
-MANDISTPAGES = runtests.1.dist testcurl.1.dist
+if BUILD_DOCS
+# if we disable man page building, ignore these
+RUNTESTS_DOCS = runtests.1
+TESTCURL_DOCS = testcurl.1
+MANFILES = $(RUNTESTS_DOCS) $(TESTCURL_DOCS)
+endif
+
+CURLPAGES = runtests.md testcurl.md
 
 # scripts used in test cases
 TESTSCRIPTS = \
@@ -40,19 +47,55 @@ TESTSCRIPTS = \
  test1275.pl  \
  test1276.pl  \
  test1477.pl  \
+ test1486.pl  \
+ test1488.pl  \
  test1544.pl  \
+ test1707.pl  \
  test971.pl
 
-EXTRA_DIST = appveyor.pm azure.pm CMakeLists.txt devtest.pl             \
- dictserver.py directories.pm FILEFORMAT.md processhelp.pm ftpserver.pl \
- getpart.pm globalconfig.pm http-server.pl http2-server.pl              \
- http3-server.pl memanalyze.pl negtelnetserver.py pathhelp.pm README.md \
- rtspserver.pl runner.pm runtests.1 runtests.pl secureserver.pl         \
- serverhelp.pm servers.pm smbserver.py sshhelp.pm sshserver.pl          \
- stunnel.pem testcurl.1 testcurl.pl testutil.pm tftpserver.pl util.py   \
- valgrind.pm valgrind.supp $(TESTSCRIPTS)
-
-DISTCLEANFILES = configurehelp.pm
+EXTRA_DIST =        \
+ CMakeLists.txt     \
+ FILEFORMAT.md      \
+ README.md          \
+ appveyor.pm        \
+ azure.pm           \
+ devtest.pl         \
+ dictserver.py      \
+ directories.pm     \
+ ech_combos.py      \
+ ech_tests.sh       \
+ ftpserver.pl       \
+ getpart.pm         \
+ globalconfig.pm    \
+ http-server.pl     \
+ http2-server.pl    \
+ http3-server.pl    \
+ memanalyze.pl      \
+ mk-bundle-hints.sh \
+ mk-bundle.pl       \
+ negtelnetserver.py \
+ nghttpx.conf       \
+ pathhelp.pm        \
+ processhelp.pm     \
+ requirements.txt   \
+ rtspserver.pl      \
+ runner.pm          \
+ runtests.pl        \
+ secureserver.pl    \
+ serverhelp.pm      \
+ servers.pm         \
+ smbserver.py       \
+ sshhelp.pm         \
+ sshserver.pl       \
+ stunnel.pem        \
+ testcurl.pl        \
+ testutil.pm        \
+ tftpserver.pl      \
+ util.py            \
+ valgrind.pm        \
+ valgrind.supp      \
+ $(TESTSCRIPTS)     \
+ $(CURLPAGES)
 
 # we have two variables here to make sure DIST_SUBDIRS won't get 'unit'
 # added twice as then targets such as 'distclean' misbehave and try to
@@ -75,14 +118,21 @@ CLEANFILES = .http.pid .https.pid .ftp.pid .ftps.pid $(MANDISTPAGES)
 curl:
 	@cd $(top_builddir) && $(MAKE)
 
+TEST_COMMON =
+
 if CROSSCOMPILING
 TEST = @echo "NOTICE: we can't run the tests when cross-compiling!"
+PYTEST = $(TEST)
 else # if not cross-compiling:
-TEST = srcdir=$(srcdir) $(PERL) $(PERLFLAGS) $(srcdir)/runtests.pl
+if USE_TEST_BUNDLES
+TEST_COMMON += -bundle
+endif
+
+TEST = srcdir=$(srcdir) $(PERL) $(PERLFLAGS) $(srcdir)/runtests.pl $(TEST_COMMON)
 TEST_Q = -a -s
 TEST_AM = -a -am
 TEST_F = -a -p -r
-TEST_T = -a -t
+TEST_T = -a -t -j20
 TEST_E = -a -e
 
 # ~<keyword> means that it will run all tests matching the keyword, but will
@@ -90,8 +140,17 @@ TEST_E = -a -e
 TEST_NF = -a -p ~flaky ~timing-dependent
 
 # special CI target derived from nonflaky with CI-specific flags
-TEST_CI = $(TEST_NF) -rm
+TEST_CI = $(TEST_NF) -r -rm -j20
+
+PYTEST = pytest
 endif
+
+CD2NROFF = $(top_srcdir)/scripts/cd2nroff $< >$@
+
+SUFFIXES = .1 .md
+
+.md.1:
+	$(CD2)$(CD2NROFF)
 
 # make sure that PERL is pointing to an executable
 perlcheck:
@@ -121,13 +180,18 @@ torture-test: perlcheck all
 event-test: perlcheck all
 	$(TEST) $(TEST_E) $(TFLAGS)
 
+default-pytest: ci-pytest
+
+ci-pytest: all
+	srcdir=$(srcdir) $(PYTEST) -v $(srcdir)/http
+
 checksrc:
 	(cd libtest && $(MAKE) checksrc)
 	(cd unit && $(MAKE) checksrc)
 	(cd server && $(MAKE) checksrc)
 	(cd http && $(MAKE) checksrc)
 
-if CURLDEBUG
-# for debug builds, we scan the sources on all regular make invokes
-all-local: checksrc
-endif
+all-local: $(MANFILES)
+
+distclean:
+	rm -f $(MANFILES)

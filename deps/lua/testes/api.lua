@@ -165,6 +165,23 @@ do  -- test returning more results than fit in the caller stack
 end
 
 
+do  -- testing multipe returns
+  local function foo (n)
+    if n > 0 then return n, foo(n - 1) end
+  end
+
+  local t = {T.testC("call 1 10; return 10", foo, 20)}
+  assert(t[1] == 20 and t[10] == 11 and t[11] == nil)
+
+  local t = table.pack(T.testC("call 1 10; return 10", foo, 2))
+  assert(t[1] == 2 and t[2] == 1 and t[3] == nil and t.n == 10)
+
+  local t = {T.testC([[
+    checkstack 300 "error"; call 1 250; return 250]], foo, 250)}
+  assert(t[1] == 250 and t[250] == 1 and t[251] == nil)
+end
+
+
 -- testing globals
 _G.AA = 14; _G.BB = "a31"
 local a = {T.testC[[
@@ -399,6 +416,10 @@ do
   -- trivial error
   assert(T.checkpanic("pushstring hi; error") == "hi")
 
+ -- thread status inside panic (bug in 5.4.4)
+  assert(T.checkpanic("pushstring hi; error", "threadstatus; return 2") ==
+         "ERRRUN")
+
   -- using the stack inside panic
   assert(T.checkpanic("pushstring hi; error;",
     [[checkstack 5 XX
@@ -415,6 +436,21 @@ do
   T.totalmem(T.totalmem()+10000)   -- set low memory limit (+10k)
   assert(T.checkpanic("newuserdata 20000") == MEMERRMSG)
   T.totalmem(0)          -- restore high limit
+
+  -- memory error + thread status
+  local x = T.checkpanic(
+    [[ alloccount 0    # force a memory error in next line
+       newtable
+    ]],
+    [[
+       alloccount -1   # allow free allocations again
+       pushstring XX
+       threadstatus
+       concat 2     # to make sure message came from here
+       return 1
+    ]])
+  T.alloccount()
+  assert(x == "XX" .. "not enough memory")
 
   -- stack error
   if not _soft then
@@ -546,9 +582,9 @@ do
   ]], source)
   collectgarbage()
   local m2 = collectgarbage"count" * 1024
-  -- load used fewer than 350 bytes. Code alone has more than 3*N bytes,
+  -- load used fewer than 400 bytes. Code alone has more than 3*N bytes,
   -- and string literal has N bytes. Both were not loaded.
-  assert(m2 > m1 and m2 - m1 < 350)
+  assert(m2 > m1 and m2 - m1 < 400)
   X = 0; code(); assert(X == N and Y == string.rep("a", N))
   X = nil; Y = nil
 
@@ -782,7 +818,7 @@ assert(debug.getuservalue(b) == 134)
 -- test barrier for uservalues
 do
   local oldmode = collectgarbage("incremental")
-  T.gcstate("atomic")
+  T.gcstate("enteratomic")
   assert(T.gccolor(b) == "black")
   debug.setuservalue(b, {x = 100})
   T.gcstate("pause")  -- complete collection
@@ -1122,7 +1158,7 @@ assert(a == nil and c == 2)   -- 2 == run-time error
 a, b, c = T.doremote(L1, "return a+")
 assert(a == nil and c == 3 and type(b) == "string")   -- 3 == syntax error
 
-T.loadlib(L1, 2)    -- load only 'package'
+T.loadlib(L1, 2, ~2)    -- load only 'package', preload all others
 a, b, c = T.doremote(L1, [[
   string = require'string'
   local initialG = _G   -- not loaded yet
@@ -1141,7 +1177,7 @@ T.closestate(L1);
 
 
 L1 = T.newstate()
-T.loadlib(L1, 0)
+T.loadlib(L1, 0, 0)
 T.doremote(L1, "a = {}")
 T.testC(L1, [[getglobal "a"; pushstring "x"; pushint 1;
              settable -3]])
@@ -1193,7 +1229,8 @@ do
   local a, b = pcall(T.makeCfunc[[
     call 0 1   # create resource
     toclose -1 # mark it to be closed
-    error       # resource is the error object
+    pushvalue -1  # replicate it as error object
+    error       # resource right after error object
   ]], newresource)
   assert(a == false and b[1] == 11)
   assert(#openresource == 0)    -- was closed
@@ -1524,7 +1561,7 @@ end
 
 do   -- garbage collection with no extra memory
   local L = T.newstate()
-  T.loadlib(L, 1 | 2)   -- load _G and 'package'
+  T.loadlib(L, 1 | 2, 0)   -- load _G and 'package'
   local res = (T.doremote(L, [[
     _ENV = _G
     assert(string == nil)

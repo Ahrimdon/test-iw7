@@ -7,6 +7,11 @@ Source: libcurl
 See-also:
   - CURLOPT_NEW_DIRECTORY_PERMS (3)
   - CURLOPT_UPLOAD (3)
+Protocol:
+  - SFTP
+  - SCP
+  - FILE
+Added-in: 7.16.4
 ---
 
 # NAME
@@ -32,9 +37,7 @@ The only protocols that can use this are *sftp://*, *scp://*, and *file://*.
 
 0644
 
-# PROTOCOLS
-
-SFTP, SCP and FILE
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -51,9 +54,7 @@ int main(void)
 }
 ~~~
 
-# AVAILABILITY
-
-Added in 7.16.4
+# %AVAILABILITY%
 
 # RETURN VALUE
 

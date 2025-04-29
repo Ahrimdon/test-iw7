@@ -8,6 +8,9 @@ See-also:
   - CURLINFO_RESPONSE_CODE (3)
   - CURLOPT_FAILONERROR (3)
   - CURLOPT_HTTPHEADER (3)
+Protocol:
+  - HTTP
+Added-in: 7.51.0
 ---
 
 # NAME
@@ -39,9 +42,7 @@ Most applications do not need this option.
 
 0, stop sending on error
 
-# PROTOCOLS
-
-HTTP
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -59,9 +60,7 @@ int main(void)
 }
 ~~~
 
-# AVAILABILITY
-
-Along with HTTP. Added in 7.51.0.
+# %AVAILABILITY%
 
 # RETURN VALUE
 

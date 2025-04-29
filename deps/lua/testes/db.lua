@@ -49,6 +49,15 @@ do
 end
 
 
+--  bug in 5.4.4-5.4.6: activelines in vararg functions
+--  without debug information
+do
+  local func = load(string.dump(load("print(10)"), true))
+  local actl = debug.getinfo(func, "L").activelines
+  assert(#actl == 0)   -- no line info
+end
+
+
 -- test file and string names truncation
 local a = "function f () end"
 local function dostring (s, x) return load(s, x)() end
@@ -119,7 +128,7 @@ then
 else
   a=2
 end
-]], {2,3,4,7})
+]], {2,4,7})
 
 
 test([[
@@ -614,6 +623,9 @@ local function f (x)
     print"+"
     end
 end
+
+assert(debug.getinfo(print, 't').istailcall == false)
+assert(debug.getinfo(print, 't').extraargs == 0)
 
 function g(x) return f(x) end
 

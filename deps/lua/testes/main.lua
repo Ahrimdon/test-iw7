@@ -263,6 +263,15 @@ assert(string.find(getoutput(), "error calling 'print'"))
 RUN('echo "io.stderr:write(1000)\ncont" | lua -e "require\'debug\'.debug()" 2> %s', out)
 checkout("lua_debug> 1000lua_debug> ")
 
+do  -- test warning for locals
+  RUN('echo "  		local x" | lua -i > %s 2>&1', out)
+  assert(string.find(getoutput(), "warning: "))
+
+  RUN('echo "local1 = 10\nlocal1 + 3" | lua -i > %s 2>&1', out)
+  local t = getoutput()
+  assert(not string.find(t, "warning"))
+  assert(string.find(t, "13"))
+end
 
 print("testing warnings")
 
@@ -312,7 +321,7 @@ setmetatable({}, {__gc = function ()
   -- this finalizer should not be called, as object will be
   -- created after 'lua_close' has been called
   setmetatable({}, {__gc = function () print(3) end})
-  print(collectgarbage())    -- cannot call collector here
+  print(collectgarbage() or false)    -- cannot call collector here
   os.exit(0, true)
 end})
 ]]
@@ -322,7 +331,7 @@ creating 1
 creating 2
 2
 creating 3
-nil
+false
 1
 ]]
 
@@ -345,9 +354,14 @@ a]]
 RUN([[lua -e"_PROMPT='' _PROMPT2=''" -i < %s > %s]], prog, out)
 checkprogout("6\n10\n10\n\n")
 
-prepfile("a = [[b\nc\nd\ne]]\n=a")
+prepfile("a = [[b\nc\nd\ne]]\na")
 RUN([[lua -e"_PROMPT='' _PROMPT2=''" -i < %s > %s]], prog, out)
 checkprogout("b\nc\nd\ne\n\n")
+
+-- input interrupted in continuation line
+prepfile("a.\n")
+RUN([[lua -i < %s > /dev/null 2> %s]], prog, out)
+checkprogout("near <eof>\n")
 
 local prompt = "alo"
 prepfile[[ --
@@ -368,20 +382,18 @@ assert(string.find(t, prompt .. ".*" .. prompt .. ".*" .. prompt))
 
 
 -- non-string prompt
-prompt =
-  "local C = 0;\z
-   _PROMPT=setmetatable({},{__tostring = function () \z
-     C = C + 1; return C end})"
+prompt = [[
+  local C = 'X';
+   _PROMPT=setmetatable({},{__tostring = function ()
+     C = C .. 'X'; return C end})
+]]
 prepfile[[ --
 a = 2
 ]]
 RUN([[lua -e "%s" -i < %s > %s]], prompt, prog, out)
 local t = getoutput()
-assert(string.find(t, [[
-1 --
-2a = 2
-3
-]], 1, true))
+-- skip version line and then check the presence of the three prompts
+assert(string.find(t, "^.-\nXX[^\nX]*\n?XXX[^\nX]*\n?XXXX\n?$"))
 
 
 -- test for error objects

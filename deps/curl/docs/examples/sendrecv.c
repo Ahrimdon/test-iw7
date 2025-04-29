@@ -48,9 +48,12 @@ static int wait_on_socket(curl_socket_t sockfd, int for_recv, long timeout_ms)
  * warning: conversion to 'long unsigned int' from 'curl_socket_t' {aka 'int'}
  * may change the sign of the result [-Wsign-conversion]
  */
-#if defined(__GNUC__) && defined(__CYGWIN__)
+#if defined(__GNUC__)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wsign-conversion"
+#elif defined(_MSC_VER)
+#pragma warning(push)
+#pragma warning(disable:4127)  /* conditional expression is constant */
 #endif
   FD_SET(sockfd, &errfd); /* always check for error */
 
@@ -60,8 +63,10 @@ static int wait_on_socket(curl_socket_t sockfd, int for_recv, long timeout_ms)
   else {
     FD_SET(sockfd, &outfd);
   }
-#if defined(__GNUC__) && defined(__CYGWIN__)
+#if defined(__GNUC__)
 #pragma GCC diagnostic pop
+#elif defined(_MSC_VER)
+#pragma warning(pop)
 #endif
 
   /* select() returns the number of signalled sockets or -1 */

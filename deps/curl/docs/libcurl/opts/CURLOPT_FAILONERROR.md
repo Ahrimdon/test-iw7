@@ -8,6 +8,9 @@ See-also:
   - CURLINFO_RESPONSE_CODE (3)
   - CURLOPT_HTTP200ALIASES (3)
   - CURLOPT_KEEP_SENDING_ON_ERROR (3)
+Protocol:
+  - HTTP
+Added-in: 7.1
 ---
 
 # NAME
@@ -43,9 +46,7 @@ get closed and *CURLE_HTTP_RETURNED_ERROR* is returned.
 
 0, do not fail on error
 
-# PROTOCOLS
-
-HTTP
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -65,9 +66,7 @@ int main(void)
 }
 ~~~
 
-# AVAILABILITY
-
-Along with HTTP.
+# %AVAILABILITY%
 
 # RETURN VALUE
 

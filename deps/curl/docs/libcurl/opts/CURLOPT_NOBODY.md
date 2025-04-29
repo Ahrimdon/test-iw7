@@ -10,6 +10,9 @@ See-also:
   - CURLOPT_POSTFIELDS (3)
   - CURLOPT_REQUEST_TARGET (3)
   - CURLOPT_UPLOAD (3)
+Protocol:
+  - All
+Added-in: 7.1
 ---
 
 # NAME
@@ -47,9 +50,7 @@ URL you request).
 
 0, the body is transferred
 
-# PROTOCOLS
-
-Most
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -60,7 +61,7 @@ int main(void)
   if(curl) {
     curl_easy_setopt(curl, CURLOPT_URL, "https://example.com");
 
-    /* get us the resource without a body - use HEAD! */
+    /* get us the resource without a body - use HEAD */
     curl_easy_setopt(curl, CURLOPT_NOBODY, 1L);
 
     /* Perform the request */
@@ -69,9 +70,7 @@ int main(void)
 }
 ~~~
 
-# AVAILABILITY
-
-Always
+# %AVAILABILITY%
 
 # RETURN VALUE
 

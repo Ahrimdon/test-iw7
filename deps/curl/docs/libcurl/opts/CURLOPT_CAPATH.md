@@ -9,6 +9,14 @@ See-also:
   - CURLOPT_CAINFO (3)
   - CURLOPT_DEBUGFUNCTION (3)
   - CURLOPT_STDERR (3)
+Protocol:
+  - TLS
+TLS-backend:
+  - OpenSSL
+  - GnuTLS
+  - mbedTLS
+  - wolfSSL
+Added-in: 7.9.8
 ---
 
 # NAME
@@ -37,15 +45,16 @@ to some limitation in OpenSSL.
 The application does not have to keep the string around after setting this
 option.
 
+Using this option multiple times makes the last set string override the
+previous ones. Set it to NULL to disable its use again.
+
 The default value for this can be figured out with CURLINFO_CAPATH(3).
 
 # DEFAULT
 
-A default path detected at build time.
+A path detected at build time.
 
-# PROTOCOLS
-
-All TLS based protocols: HTTPS, FTPS, IMAPS, POP3S, SMTPS etc.
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -63,10 +72,7 @@ int main(void)
 }
 ~~~
 
-# AVAILABILITY
-
-This option is supported by the OpenSSL, GnuTLS and mbedTLS (since 7.56.0)
-backends.
+# %AVAILABILITY%
 
 # RETURN VALUE
 

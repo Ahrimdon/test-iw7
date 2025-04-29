@@ -8,6 +8,9 @@ See-also:
   - CURLOPT_HTTP_VERSION (3)
   - CURLOPT_RESOLVE (3)
   - CURLOPT_SSLVERSION (3)
+Protocol:
+  - All
+Added-in: 7.10.8
 ---
 
 # NAME
@@ -50,9 +53,7 @@ Uses only IPv6 addresses.
 
 CURL_IPRESOLVE_WHATEVER
 
-# PROTOCOLS
-
-All
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -74,9 +75,7 @@ int main(void)
 }
 ~~~
 
-# AVAILABILITY
-
-Always
+# %AVAILABILITY%
 
 # RETURN VALUE
 

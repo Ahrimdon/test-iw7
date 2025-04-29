@@ -8,6 +8,9 @@ See-also:
   - CURLINFO_CONTENT_LENGTH_UPLOAD_T (3)
   - CURLOPT_INFILESIZE (3)
   - CURLOPT_UPLOAD (3)
+Protocol:
+  - All
+Added-in: 7.11.0
 ---
 
 # NAME
@@ -45,9 +48,7 @@ and sending a different amount may lead to errors.
 
 Unset
 
-# PROTOCOLS
-
-Many
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -72,9 +73,11 @@ int main(void)
 }
 ~~~
 
-# AVAILABILITY
+# HISTORY
 
 SMTP support added in 7.23.0
+
+# %AVAILABILITY%
 
 # RETURN VALUE
 

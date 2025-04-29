@@ -8,6 +8,9 @@ See-also:
   - CURLOPT_DNS_INTERFACE (3)
   - CURLOPT_DNS_LOCAL_IP4 (3)
   - CURLOPT_DNS_SERVERS (3)
+Protocol:
+  - All
+Added-in: 7.33.0
 ---
 
 # NAME
@@ -32,13 +35,14 @@ address).
 The application does not have to keep the string around after setting this
 option.
 
+Using this option multiple times makes the last set string override the
+previous ones. Set it to NULL to disable its use again.
+
 # DEFAULT
 
 NULL
 
-# PROTOCOLS
-
-All
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -56,12 +60,12 @@ int main(void)
 }
 ~~~
 
-# AVAILABILITY
+# NOTES
 
 This option requires that libcurl was built with a resolver backend that
 supports this operation. The c-ares backend is the only such one.
 
-Added in 7.33.0
+# %AVAILABILITY%
 
 # RETURN VALUE
 

@@ -14,6 +14,11 @@ See-also:
   - CURLOPT_PROXY_SSL_VERIFYPEER (3)
   - CURLOPT_SSL_VERIFYHOST (3)
   - CURLOPT_SSL_VERIFYPEER (3)
+Protocol:
+  - TLS
+TLS-backend:
+  - All
+Added-in: 7.52.0
 ---
 
 # NAME
@@ -51,15 +56,17 @@ method of verifying the peer's certificate chain.
 The application does not have to keep the string around after setting this
 option.
 
+Using this option multiple times makes the last set string override the
+previous ones. Set it to NULL to disable its use again and switches back to
+internal default.
+
 The default value for this can be figured out with CURLINFO_CAINFO(3).
 
 # DEFAULT
 
 Built-in system specific
 
-# PROTOCOLS
-
-Used with HTTPS proxy
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -79,13 +86,13 @@ int main(void)
 }
 ~~~
 
-# AVAILABILITY
-
-Added in 7.52.0
+# NOTES
 
 For TLS backends that do not support certificate files, the
 CURLOPT_PROXY_CAINFO(3) option is ignored. Refer to
 https://curl.se/docs/ssl-compared.html
+
+# %AVAILABILITY%
 
 # RETURN VALUE
 

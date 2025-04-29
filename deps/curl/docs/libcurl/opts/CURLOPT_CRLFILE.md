@@ -8,6 +8,14 @@ See-also:
   - CURLOPT_PROXY_CRLFILE (3)
   - CURLOPT_SSL_VERIFYHOST (3)
   - CURLOPT_SSL_VERIFYPEER (3)
+Protocol:
+  - TLS
+TLS-backend:
+  - GnuTLS
+  - mbedTLS
+  - OpenSSL
+  - rustls
+Added-in: 7.19.0
 ---
 
 # NAME
@@ -41,20 +49,21 @@ This option makes sense only when used in combination with the
 CURLOPT_SSL_VERIFYPEER(3) option.
 
 A specific error code (*CURLE_SSL_CRL_BADFILE*) is defined with the option. It
-is returned when the SSL exchange fails because the CRL file cannot be
-loaded. A failure in certificate verification due to a revocation information
-found in the CRL does not trigger this specific error.
+is returned when the SSL exchange fails because the CRL file cannot be loaded.
+A failure in certificate verification due to a revocation information found in
+the CRL does not trigger this specific error.
 
 The application does not have to keep the string around after setting this
 option.
+
+Using this option multiple times makes the last set string override the
+previous ones. Set it to NULL to disable its use again.
 
 # DEFAULT
 
 NULL
 
-# PROTOCOLS
-
-All TLS-based protocols
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -72,9 +81,7 @@ int main(void)
 }
 ~~~
 
-# AVAILABILITY
-
-Added in 7.19.0
+# %AVAILABILITY%
 
 # RETURN VALUE
 

@@ -15,6 +15,7 @@
 
 #include "lua.h"
 
+#include "lapi.h"
 #include "lgc.h"
 #include "lobject.h"
 #include "lstate.h"
@@ -26,11 +27,11 @@ typedef struct {
   lua_State *L;
   lua_Writer writer;
   void *data;
-  lu_mem offset;  /* current position relative to beginning of dump */
+  size_t offset;  /* current position relative to beginning of dump */
   int strip;
   int status;
   Table *h;  /* table to track saved strings */
-  lua_Integer nstr;  /* counter to number saved strings */
+  lua_Integer nstr;  /* counter for counting saved strings */
 } DumpState;
 
 
@@ -62,11 +63,11 @@ static void dumpBlock (DumpState *D, const void *b, size_t size) {
 ** Dump enough zeros to ensure that current position is a multiple of
 ** 'align'.
 */
-static void dumpAlign (DumpState *D, int align) {
-  int padding = align - (D->offset % align);
+static void dumpAlign (DumpState *D, unsigned align) {
+  unsigned padding = align - cast_uint(D->offset % align);
   if (padding < align) {  /* padding == align means no padding */
     static lua_Integer paddingContent = 0;
-    lua_assert(cast_uint(align) <= sizeof(lua_Integer));
+    lua_assert(align <= sizeof(lua_Integer));
     dumpBlock(D, &paddingContent, padding);
   }
   lua_assert(D->offset % align == 0);
@@ -83,26 +84,31 @@ static void dumpByte (DumpState *D, int y) {
 
 
 /*
-** 'dumpSize' buffer size: each byte can store up to 7 bits. (The "+6"
-** rounds up the division.)
+** size for 'dumpVarint' buffer: each byte can store up to 7 bits.
+** (The "+6" rounds up the division.)
 */
 #define DIBS    ((sizeof(size_t) * CHAR_BIT + 6) / 7)
 
-static void dumpSize (DumpState *D, size_t x) {
+/*
+** Dumps an unsigned integer using the MSB Varint encoding
+*/
+static void dumpVarint (DumpState *D, size_t x) {
   lu_byte buff[DIBS];
-  int n = 0;
-  do {
-    buff[DIBS - (++n)] = x & 0x7f;  /* fill buffer in reverse order */
-    x >>= 7;
-  } while (x != 0);
-  buff[DIBS - 1] |= 0x80;  /* mark last byte */
+  unsigned n = 1;
+  buff[DIBS - 1] = x & 0x7f;  /* fill least-significant byte */
+  while ((x >>= 7) != 0)  /* fill other bytes in reverse order */
+    buff[DIBS - (++n)] = cast_byte((x & 0x7f) | 0x80);
   dumpVector(D, buff + DIBS - n, n);
 }
 
 
+static void dumpSize (DumpState *D, size_t sz) {
+  dumpVarint(D, sz);
+}
+
 static void dumpInt (DumpState *D, int x) {
   lua_assert(x >= 0);
-  dumpSize(D, x);
+  dumpVarint(D, cast(size_t, x));
 }
 
 
@@ -128,9 +134,10 @@ static void dumpString (DumpState *D, TString *ts) {
     dumpSize(D, 0);
   else {
     TValue idx;
-    if (luaH_getstr(D->h, ts, &idx) == HOK) {  /* string already saved? */
+    int tag = luaH_getstr(D->h, ts, &idx);
+    if (!tagisempty(tag)) {  /* string already saved? */
       dumpSize(D, 1);  /* reuse a saved string */
-      dumpInt(D, ivalue(&idx));  /* index of saved string */
+      dumpSize(D, cast_sizet(ivalue(&idx)));  /* index of saved string */
     }
     else {  /* must write and save the string */
       TValue key, value;  /* to save the string in the hash */
@@ -152,7 +159,7 @@ static void dumpCode (DumpState *D, const Proto *f) {
   dumpInt(D, f->sizecode);
   dumpAlign(D, sizeof(f->code[0]));
   lua_assert(f->code != NULL);
-  dumpVector(D, f->code, f->sizecode);
+  dumpVector(D, f->code, cast_uint(f->sizecode));
 }
 
 
@@ -209,13 +216,13 @@ static void dumpDebug (DumpState *D, const Proto *f) {
   n = (D->strip) ? 0 : f->sizelineinfo;
   dumpInt(D, n);
   if (f->lineinfo != NULL)
-    dumpVector(D, f->lineinfo, n);
+    dumpVector(D, f->lineinfo, cast_uint(n));
   n = (D->strip) ? 0 : f->sizeabslineinfo;
   dumpInt(D, n);
   if (n > 0) {
     /* 'abslineinfo' is an array of structures of int's */
     dumpAlign(D, sizeof(int));
-    dumpVector(D, f->abslineinfo, n);
+    dumpVector(D, f->abslineinfo, cast_uint(n));
   }
   n = (D->strip) ? 0 : f->sizelocvars;
   dumpInt(D, n);

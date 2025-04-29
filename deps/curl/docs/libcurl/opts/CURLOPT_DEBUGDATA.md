@@ -7,6 +7,9 @@ Source: libcurl
 See-also:
   - CURLOPT_DEBUGFUNCTION (3)
   - CURLOPT_STDERR (3)
+Protocol:
+  - All
+Added-in: 7.9.6
 ---
 
 # NAME
@@ -31,9 +34,7 @@ not used by libcurl, it is only passed to the callback.
 
 NULL
 
-# PROTOCOLS
-
-All
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -77,9 +78,7 @@ int main(void)
 }
 ~~~
 
-# AVAILABILITY
-
-Always
+# %AVAILABILITY%
 
 # RETURN VALUE
 

@@ -28,12 +28,12 @@
 #define CURL_CA_BUNDLE "/sys/lib/tls/ca.pem"
 #define CURL_CA_PATH "/sys/lib/tls"
 #define CURL_STATICLIB 1
-#define ENABLE_IPV6 1
+#define USE_IPV6 1
 #define CURL_DISABLE_LDAP 1
 
 #define NEED_REENTRANT 1
-#ifndef OS
-#define OS "plan9"
+#ifndef CURL_OS
+#define CURL_OS "plan9"
 #endif
 #define PACKAGE "curl"
 #define PACKAGE_NAME "curl"
@@ -41,7 +41,6 @@
 #define PACKAGE_STRING "curl -"
 #define PACKAGE_TARNAME "curl"
 #define PACKAGE_VERSION "-"
-#define RANDOM_FILE "/dev/random"
 #define VERSION "0.0.0" /* TODO */
 
 #define STDC_HEADERS 1
@@ -104,7 +103,7 @@
 #define USE_OPENSSL 1
 
 #define HAVE_PIPE 1
-#define HAVE_POLL_FINE 1
+#define HAVE_POLL 1
 #define HAVE_POLL_H 1
 #define HAVE_PTHREAD_H 1
 #define HAVE_SETLOCALE 1

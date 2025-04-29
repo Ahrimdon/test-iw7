@@ -12,6 +12,9 @@ See-also:
   - curl_multi_strerror (3)
   - curl_share_strerror (3)
   - curl_url_strerror (3)
+Protocol:
+  - All
+Added-in: n/a
 ---
 
 # NAME
@@ -57,7 +60,7 @@ The URL was not properly formatted.
 
 ## CURLE_NOT_BUILT_IN (4)
 
-A requested feature, protocol or option was not found built-in in this libcurl
+A requested feature, protocol or option was not found built into this libcurl
 due to a build-time decision. This means that a feature or option was not
 enabled or explicitly disabled when libcurl was built and in order to get it
 to function you have to get a rebuilt libcurl.
@@ -485,6 +488,10 @@ An internal call to poll() or select() returned error that is not recoverable.
 
 A value or data field grew larger than allowed.
 
+## CURLE_ECH_REQUIRED (101)"
+
+ECH was attempted but failed.
+
 # CURLMcode
 
 This is the generic return code used by functions in the libcurl multi
@@ -518,7 +525,7 @@ You are doomed.
 
 ## CURLM_INTERNAL_ERROR (4)
 
-This can only be returned if libcurl bugs. Please report it to us!
+This can only be returned if libcurl bugs. Please report it to us.
 
 ## CURLM_BAD_SOCKET (5)
 

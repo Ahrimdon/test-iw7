@@ -110,10 +110,14 @@ static void free_config_fields(struct OperationConfig *config)
   config->url_get = NULL;
   config->url_out = NULL;
 
+#ifndef CURL_DISABLE_IPFS
   Curl_safefree(config->ipfs_gateway);
+#endif /* !CURL_DISABLE_IPFS */
   Curl_safefree(config->doh_url);
   Curl_safefree(config->cipher_list);
   Curl_safefree(config->proxy_cipher_list);
+  Curl_safefree(config->cipher13_list);
+  Curl_safefree(config->proxy_cipher13_list);
   Curl_safefree(config->cert);
   Curl_safefree(config->proxy_cert);
   Curl_safefree(config->cert_type);
@@ -169,13 +173,14 @@ static void free_config_fields(struct OperationConfig *config)
   Curl_safefree(config->preproxy);
   Curl_safefree(config->proxy_service_name);
   Curl_safefree(config->service_name);
-
   Curl_safefree(config->ftp_account);
   Curl_safefree(config->ftp_alternative_to_user);
-
   Curl_safefree(config->aws_sigv4);
   Curl_safefree(config->proto_str);
   Curl_safefree(config->proto_redir_str);
+  Curl_safefree(config->ech);
+  Curl_safefree(config->ech_config);
+  Curl_safefree(config->ech_public);
 }
 
 void config_free(struct OperationConfig *config)

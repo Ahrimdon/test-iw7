@@ -8,6 +8,14 @@ See-also:
   - CURLOPT_PROXY (3)
   - CURLOPT_PROXYTYPE (3)
   - CURLOPT_PROXY_SERVICE_NAME (3)
+Protocol:
+  - HTTP
+  - FTP
+  - IMAP
+  - POP3
+  - SMTP
+  - LDAP
+Added-in: 7.43.0
 ---
 
 # NAME
@@ -32,13 +40,14 @@ allows you to change them.
 The application does not have to keep the string around after setting this
 option.
 
+Using this option multiple times makes the last set string override the
+previous ones. Set it to NULL to disable its use again.
+
 # DEFAULT
 
 See above
 
-# PROTOCOLS
-
-HTTP, FTP, IMAP, LDAP, POP3 and SMTP
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -55,10 +64,7 @@ int main(void)
 }
 ~~~
 
-# AVAILABILITY
-
-Added in 7.43.0 for HTTP, 7.49.0 for FTP, IMAP, POP3 and SMTP,
-7.82.0 for OpenLDAP.
+# %AVAILABILITY%
 
 # RETURN VALUE
 

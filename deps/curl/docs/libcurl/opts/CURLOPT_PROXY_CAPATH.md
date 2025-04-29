@@ -10,6 +10,13 @@ See-also:
   - CURLOPT_PROXY_CAINFO (3)
   - CURLOPT_PROXY_SSL_VERIFYHOST (3)
   - CURLOPT_STDERR (3)
+Protocol:
+  - TLS
+TLS-backend:
+  - OpenSSL
+  - GnuTLS
+  - mbedTLS
+Added-in: 7.52.0
 ---
 
 # NAME
@@ -35,15 +42,17 @@ CURLOPT_PROXY_SSL_VERIFYPEER(3) is enabled (which it is by default).
 The application does not have to keep the string around after setting this
 option.
 
+Using this option multiple times makes the last set string override the
+previous ones. Set it to NULL to disable its use again and switch back to
+internal default.
+
 The default value for this can be figured out with CURLINFO_CAPATH(3).
 
 # DEFAULT
 
 NULL
 
-# PROTOCOLS
-
-Everything used over an HTTPS proxy
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -63,12 +72,7 @@ int main(void)
 }
 ~~~
 
-# AVAILABILITY
-
-Added in 7.52.0
-
-This option is supported by the OpenSSL, GnuTLS, and mbedTLS (since 7.56.0)
-backends.
+# %AVAILABILITY%
 
 # RETURN VALUE
 

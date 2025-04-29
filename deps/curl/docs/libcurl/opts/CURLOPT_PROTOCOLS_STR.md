@@ -10,6 +10,9 @@ See-also:
   - CURLOPT_REDIR_PROTOCOLS_STR (3)
   - CURLOPT_URL (3)
   - curl_version_info (3)
+Protocol:
+  - All
+Added-in: 7.85.0
 ---
 
 # NAME
@@ -46,17 +49,18 @@ You can set "ALL" as a short-cut to enable all protocols. Note that by setting
 all, you may enable protocols that were not supported the day you write this
 but are introduced in a future libcurl version.
 
-curl_version_info(3) can be used to get a list of all supported
-protocols in the current libcurl. CURLINFO_SCHEME(3) is the recommended
-way to figure out the protocol used in a previous transfer.
+curl_version_info(3) can be used to get a list of all supported protocols in
+the current libcurl. CURLINFO_SCHEME(3) is the recommended way to figure out
+the protocol used in a previous transfer.
+
+Using this option multiple times makes the last set string override the
+previous ones. Set it to NULL to restore to the internal default.
 
 # DEFAULT
 
 All protocols built-in
 
-# PROTOCOLS
-
-All
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -77,9 +81,7 @@ int main(int argc, char **argv)
 }
 ~~~
 
-# AVAILABILITY
-
-Added in 7.85.0
+# %AVAILABILITY%
 
 # RETURN VALUE
 

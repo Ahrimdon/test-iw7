@@ -8,6 +8,9 @@ See-also:
   - CURLOPT_HEADER (3)
   - CURLOPT_HTTPPROXYTUNNEL (3)
   - CURLOPT_PROXY (3)
+Protocol:
+  - All
+Added-in: 7.54.0
 ---
 
 # NAME
@@ -68,9 +71,7 @@ Content-Type: application/json
 
 0
 
-# PROTOCOLS
-
-All
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -94,9 +95,7 @@ int main(void)
 }
 ~~~
 
-# AVAILABILITY
-
-Added in 7.54.0
+# %AVAILABILITY%
 
 # RETURN VALUE
 

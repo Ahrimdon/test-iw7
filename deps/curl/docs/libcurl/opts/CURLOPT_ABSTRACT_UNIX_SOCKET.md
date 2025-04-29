@@ -7,6 +7,9 @@ Source: libcurl
 See-also:
   - CURLOPT_UNIX_SOCKET_PATH (3)
   - unix (7)
+Protocol:
+  - All
+Added-in: 7.53.0
 ---
 
 # NAME
@@ -40,11 +43,9 @@ share the same storage and therefore only one of them can be set per handle.
 
 # DEFAULT
 
-Default is NULL.
+NULL
 
-# PROTOCOLS
-
-All
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -62,9 +63,7 @@ int main(void)
 }
 ~~~
 
-# AVAILABILITY
-
-Added in 7.53.0.
+# %AVAILABILITY%
 
 # RETURN VALUE
 

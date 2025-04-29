@@ -54,7 +54,7 @@ static int trailers_callback(struct curl_slist **list, void *userdata)
 
 static const char *post_data = "xxx=yyy&aaa=bbbbb";
 
-int test(char *URL)
+CURLcode test(char *URL)
 {
   CURL *curl = NULL;
   CURLcode res = CURLE_FAILED_INIT;
@@ -87,7 +87,7 @@ int test(char *URL)
 
   test_setopt(curl, CURLOPT_URL, URL);
   test_setopt(curl, CURLOPT_HTTPHEADER, hhl);
-  test_setopt(curl, CURLOPT_POSTFIELDSIZE, strlen(post_data));
+  test_setopt(curl, CURLOPT_POSTFIELDSIZE, (long)strlen(post_data));
   test_setopt(curl, CURLOPT_POSTFIELDS, post_data);
   test_setopt(curl, CURLOPT_TRAILERFUNCTION, trailers_callback);
   test_setopt(curl, CURLOPT_TRAILERDATA, NULL);
@@ -103,5 +103,5 @@ test_cleanup:
 
   curl_global_cleanup();
 
-  return (int)res;
+  return res;
 }

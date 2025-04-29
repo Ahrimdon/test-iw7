@@ -7,6 +7,9 @@ Source: libcurl
 See-also:
   - curl_easy_escape (3)
   - curl_easy_unescape (3)
+Protocol:
+  - All
+Added-in: 7.1
 ---
 
 # NAME
@@ -30,6 +33,8 @@ differences in memory management between your application and libcurl.
 Passing in a NULL pointer in *ptr* makes this function return immediately
 with no action.
 
+# %PROTOCOLS%
+
 # EXAMPLE
 
 ~~~c
@@ -37,15 +42,13 @@ int main(void)
 {
   char *width = curl_getenv("COLUMNS");
   if(width) {
-    /* it was set! */
+    /* it was set */
     curl_free(width);
   }
 }
 ~~~
 
-# AVAILABILITY
-
-Always
+# %AVAILABILITY%
 
 # RETURN VALUE
 

@@ -9,6 +9,9 @@ See-also:
   - CURLOPT_PROXYAUTH (3)
   - CURLOPT_PROXYPASSWORD (3)
   - CURLOPT_USERNAME (3)
+Protocol:
+  - All
+Added-in: 7.19.1
 ---
 
 # NAME
@@ -41,9 +44,7 @@ option.
 
 blank
 
-# PROTOCOLS
-
-Most
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -63,9 +64,7 @@ int main(void)
 }
 ~~~
 
-# AVAILABILITY
-
-Added in 7.19.1
+# %AVAILABILITY%
 
 # RETURN VALUE
 

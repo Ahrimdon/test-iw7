@@ -83,6 +83,10 @@ int main(void)
     curl_easy_setopt(curl, CURLOPT_URL, "HTTPS://your.favourite.ssl.site");
     curl_easy_setopt(curl, CURLOPT_HEADERDATA, headerfile);
 
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable:4127)  /* conditional expression is constant */
+#endif
     do { /* dummy loop, just to break out from */
       if(pEngine) {
         /* use crypto engine */
@@ -94,7 +98,7 @@ int main(void)
         if(curl_easy_setopt(curl, CURLOPT_SSLENGINE_DEFAULT, 1L) != CURLE_OK) {
           /* set the crypto engine as default */
           /* only needed for the first time you load
-             a engine in a curl object... */
+             an engine in a curl object... */
           fprintf(stderr, "cannot set crypto engine as default\n");
           break;
         }
@@ -133,6 +137,9 @@ int main(void)
 
       /* we are done... */
     } while(0);
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
     /* always cleanup */
     curl_easy_cleanup(curl);
   }

@@ -9,6 +9,11 @@ See-also:
   - CURLOPT_POSTFIELDS (3)
   - CURLOPT_PUT (3)
   - curl_mime_init (3)
+Protocol:
+  - HTTP
+  - SMTP
+  - IMAP
+Added-in: 7.56.0
 ---
 
 # NAME
@@ -39,9 +44,7 @@ When setting CURLOPT_MIMEPOST(3) to NULL, libcurl resets the request
 type for HTTP to the default to disable the POST. Typically that would mean it
 is reset to GET. Instead you should set a desired request method explicitly.
 
-# PROTOCOLS
-
-HTTP, SMTP, IMAP.
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -65,16 +68,14 @@ int main(void)
       /* Set the form info */
       curl_easy_setopt(curl, CURLOPT_MIMEPOST, multipart);
 
-      curl_easy_perform(curl); /* post away! */
+      curl_easy_perform(curl); /* post away */
       curl_mime_free(multipart); /* free the post data */
     }
   }
 }
 ~~~
 
-# AVAILABILITY
-
-Added in 7.56.0
+# %AVAILABILITY%
 
 # RETURN VALUE
 

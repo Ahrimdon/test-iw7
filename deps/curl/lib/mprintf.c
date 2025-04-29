@@ -25,7 +25,6 @@
 #include "curl_setup.h"
 #include "dynbuf.h"
 #include "curl_printf.h"
-#include <curl/mprintf.h>
 
 #include "curl_memory.h"
 /* The last #include file should be: */
@@ -77,7 +76,7 @@ static const char upper_digits[] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 #define OUTCHAR(x)                                      \
   do {                                                  \
-    if(!stream(x, userp))                               \
+    if(!stream((unsigned char)x, userp))                \
       done++;                                           \
     else                                                \
       return done; /* return on failure */              \
@@ -102,27 +101,27 @@ typedef enum {
 
 /* conversion and display flags */
 enum {
-  FLAGS_SPACE      = 1<<0,
-  FLAGS_SHOWSIGN   = 1<<1,
-  FLAGS_LEFT       = 1<<2,
-  FLAGS_ALT        = 1<<3,
-  FLAGS_SHORT      = 1<<4,
-  FLAGS_LONG       = 1<<5,
-  FLAGS_LONGLONG   = 1<<6,
-  FLAGS_LONGDOUBLE = 1<<7,
-  FLAGS_PAD_NIL    = 1<<8,
-  FLAGS_UNSIGNED   = 1<<9,
-  FLAGS_OCTAL      = 1<<10,
-  FLAGS_HEX        = 1<<11,
-  FLAGS_UPPER      = 1<<12,
-  FLAGS_WIDTH      = 1<<13, /* '*' or '*<num>$' used */
-  FLAGS_WIDTHPARAM = 1<<14, /* width PARAMETER was specified */
-  FLAGS_PREC       = 1<<15, /* precision was specified */
-  FLAGS_PRECPARAM  = 1<<16, /* precision PARAMETER was specified */
-  FLAGS_CHAR       = 1<<17, /* %c story */
-  FLAGS_FLOATE     = 1<<18, /* %e or %E */
-  FLAGS_FLOATG     = 1<<19, /* %g or %G */
-  FLAGS_SUBSTR     = 1<<20  /* no input, only substring */
+  FLAGS_SPACE      = 1 << 0,
+  FLAGS_SHOWSIGN   = 1 << 1,
+  FLAGS_LEFT       = 1 << 2,
+  FLAGS_ALT        = 1 << 3,
+  FLAGS_SHORT      = 1 << 4,
+  FLAGS_LONG       = 1 << 5,
+  FLAGS_LONGLONG   = 1 << 6,
+  FLAGS_LONGDOUBLE = 1 << 7,
+  FLAGS_PAD_NIL    = 1 << 8,
+  FLAGS_UNSIGNED   = 1 << 9,
+  FLAGS_OCTAL      = 1 << 10,
+  FLAGS_HEX        = 1 << 11,
+  FLAGS_UPPER      = 1 << 12,
+  FLAGS_WIDTH      = 1 << 13, /* '*' or '*<num>$' used */
+  FLAGS_WIDTHPARAM = 1 << 14, /* width PARAMETER was specified */
+  FLAGS_PREC       = 1 << 15, /* precision was specified */
+  FLAGS_PRECPARAM  = 1 << 16, /* precision PARAMETER was specified */
+  FLAGS_CHAR       = 1 << 17, /* %c story */
+  FLAGS_FLOATE     = 1 << 18, /* %e or %E */
+  FLAGS_FLOATG     = 1 << 19, /* %g or %G */
+  FLAGS_SUBSTR     = 1 << 20  /* no input, only substring */
 };
 
 enum {
@@ -243,7 +242,7 @@ static int parsefmt(const char *format,
       struct va_input *iptr;
       bool loopit = TRUE;
       fmt++;
-      outlen = fmt - start - 1;
+      outlen = (size_t)(fmt - start - 1);
       if(*fmt == '%') {
         /* this means a %% that should be output only as %. Create an output
            segment. */
@@ -261,7 +260,8 @@ static int parsefmt(const char *format,
         continue; /* while */
       }
 
-      flags = width = precision = 0;
+      flags = 0;
+      width = precision = 0;
 
       if(use_dollar != DOLLAR_NOPE) {
         param = dollarstring(fmt, &fmt);
@@ -291,7 +291,7 @@ static int parsefmt(const char *format,
           break;
         case '-':
           flags |= FLAGS_LEFT;
-          flags &= ~FLAGS_PAD_NIL;
+          flags &= ~(unsigned int)FLAGS_PAD_NIL;
           break;
         case '#':
           flags |= FLAGS_ALT;
@@ -455,15 +455,30 @@ static int parsefmt(const char *format,
         flags |= FLAGS_UNSIGNED;
         break;
       case 'o':
-        type = FORMAT_INT;
-        flags |= FLAGS_OCTAL;
+        if(flags & FLAGS_LONGLONG)
+          type = FORMAT_LONGLONGU;
+        else if(flags & FLAGS_LONG)
+          type = FORMAT_LONGU;
+        else
+          type = FORMAT_INTU;
+        flags |= FLAGS_OCTAL|FLAGS_UNSIGNED;
         break;
       case 'x':
-        type = FORMAT_INTU;
+        if(flags & FLAGS_LONGLONG)
+          type = FORMAT_LONGLONGU;
+        else if(flags & FLAGS_LONG)
+          type = FORMAT_LONGU;
+        else
+          type = FORMAT_INTU;
         flags |= FLAGS_HEX|FLAGS_UNSIGNED;
         break;
       case 'X':
-        type = FORMAT_INTU;
+        if(flags & FLAGS_LONGLONG)
+          type = FORMAT_LONGLONGU;
+        else if(flags & FLAGS_LONG)
+          type = FORMAT_LONGU;
+        else
+          type = FORMAT_INTU;
         flags |= FLAGS_HEX|FLAGS_UPPER|FLAGS_UNSIGNED;
         break;
       case 'c':
@@ -549,7 +564,7 @@ static int parsefmt(const char *format,
       optr = &out[ocount++];
       if(ocount > MAX_SEGMENTS)
         return PFMT_MANYSEGS;
-      optr->input = param;
+      optr->input = (unsigned int)param;
       optr->flags = flags;
       optr->width = width;
       optr->precision = precision;
@@ -562,7 +577,7 @@ static int parsefmt(const char *format,
   }
 
   /* is there a trailing piece */
-  outlen = fmt - start;
+  outlen = (size_t)(fmt - start);
   if(outlen) {
     optr = &out[ocount++];
     if(ocount > MAX_SEGMENTS)
@@ -668,7 +683,7 @@ static int formatf(
   char work[BUFFSIZE];
 
   /* 'workend' points to the final buffer byte position, but with an extra
-     byte as margin to avoid the (false?) warning Coverity gives us
+     byte as margin to avoid the (FALSE?) warning Coverity gives us
      otherwise */
   char *workend = &work[sizeof(work) - 2];
 
@@ -688,7 +703,7 @@ static int formatf(
     mp_intmax_t signed_num; /* Used to convert negative in positive.  */
     char *w;
     size_t outlen = optr->outlen;
-    int flags = optr->flags;
+    unsigned int flags = optr->flags;
 
     if(outlen) {
       char *str = optr->start;
@@ -710,7 +725,7 @@ static int formatf(
         else
           width = -width;
         flags |= FLAGS_LEFT;
-        flags &= ~FLAGS_PAD_NIL;
+        flags &= ~(unsigned int)FLAGS_PAD_NIL;
       }
     }
     else
@@ -760,7 +775,7 @@ static int formatf(
       }
       else if(flags & FLAGS_HEX) {
         /* Hexadecimal unsigned integer */
-        digits = (flags & FLAGS_UPPER)? upper_digits : lower_digits;
+        digits = (flags & FLAGS_UPPER) ? upper_digits : lower_digits;
         base = 16;
         is_neg = FALSE;
       }
@@ -862,12 +877,12 @@ number:
 
       str = (char *)iptr->val.str;
       if(!str) {
-        /* Write null string if there's space.  */
+        /* Write null string if there is space.  */
         if(prec == -1 || prec >= (int) sizeof(nilstr) - 1) {
           str = nilstr;
           len = sizeof(nilstr) - 1;
           /* Disable quotes around (nil) */
-          flags &= (~FLAGS_ALT);
+          flags &= ~(unsigned int)FLAGS_ALT;
         }
         else {
           str = "";
@@ -886,13 +901,13 @@ number:
       if(flags & FLAGS_ALT)
         OUTCHAR('"');
 
-      if(!(flags&FLAGS_LEFT))
+      if(!(flags & FLAGS_LEFT))
         while(width-- > 0)
           OUTCHAR(' ');
 
       for(; len && *str; len--)
         OUTCHAR(*str++);
-      if(flags&FLAGS_LEFT)
+      if(flags & FLAGS_LEFT)
         while(width-- > 0)
           OUTCHAR(' ');
 
@@ -906,7 +921,7 @@ number:
       if(iptr->val.ptr) {
         /* If the pointer is not NULL, write it as a %#x spec.  */
         base = 16;
-        digits = (flags & FLAGS_UPPER)? upper_digits : lower_digits;
+        digits = (flags & FLAGS_UPPER) ? upper_digits : lower_digits;
         is_alt = TRUE;
         num = (size_t) iptr->val.ptr;
         is_neg = FALSE;
@@ -952,12 +967,13 @@ number:
       *fptr = 0;
 
       if(width >= 0) {
+        size_t dlen;
         if(width >= (int)sizeof(work))
           width = sizeof(work)-1;
         /* RECURSIVE USAGE */
-        len = curl_msnprintf(fptr, left, "%d", width);
-        fptr += len;
-        left -= len;
+        dlen = (size_t)curl_msnprintf(fptr, left, "%d", width);
+        fptr += dlen;
+        left -= dlen;
       }
       if(prec >= 0) {
         /* for each digit in the integer part, we can have one less
@@ -965,7 +981,7 @@ number:
         size_t maxprec = sizeof(work) - 2;
         double val = iptr->val.dnum;
         if(width > 0 && prec <= width)
-          maxprec -= width;
+          maxprec -= (size_t)width;
         while(val >= 10.0) {
           val /= 10;
           maxprec--;
@@ -983,7 +999,7 @@ number:
         *fptr++ = 'l';
 
       if(flags & FLAGS_FLOATE)
-        *fptr++ = (char)((flags & FLAGS_UPPER) ? 'E':'e');
+        *fptr++ = (char)((flags & FLAGS_UPPER) ? 'E' : 'e');
       else if(flags & FLAGS_FLOATG)
         *fptr++ = (char)((flags & FLAGS_UPPER) ? 'G' : 'g');
       else
@@ -1038,8 +1054,8 @@ static int addbyter(unsigned char outc, void *f)
 {
   struct nsprintf *infop = f;
   if(infop->length < infop->max) {
-    /* only do this if we haven't reached max length yet */
-    *infop->buffer++ = outc; /* store */
+    /* only do this if we have not reached max length yet */
+    *infop->buffer++ = (char)outc; /* store */
     infop->length++; /* we are now one byte larger */
     return 0;     /* fputc() returns like this on success */
   }
@@ -1060,10 +1076,10 @@ int curl_mvsnprintf(char *buffer, size_t maxlength, const char *format,
   if(info.max) {
     /* we terminate this with a zero byte */
     if(info.max == info.length) {
-      /* we're at maximum, scrap the last letter */
+      /* we are at maximum, scrap the last letter */
       info.buffer[-1] = 0;
       DEBUGASSERT(retcode);
-      retcode--; /* don't count the nul byte */
+      retcode--; /* do not count the nul byte */
     }
     else
       info.buffer[0] = 0;
@@ -1139,7 +1155,7 @@ char *curl_maprintf(const char *format, ...)
 static int storebuffer(unsigned char outc, void *f)
 {
   char **buffer = f;
-  **buffer = outc;
+  **buffer = (char)outc;
   (*buffer)++;
   return 0;
 }
@@ -1160,9 +1176,7 @@ static int fputc_wrapper(unsigned char outc, void *f)
   int out = outc;
   FILE *s = f;
   int rc = fputc(out, s);
-  if(rc == out)
-    return 0;
-  return 1;
+  return rc == EOF;
 }
 
 int curl_mprintf(const char *format, ...)

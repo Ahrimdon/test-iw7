@@ -8,6 +8,11 @@ See-also:
   - CURLOPT_SSLKEY (3)
   - CURLOPT_SSLKEYTYPE (3)
   - CURLOPT_SSLKEY_BLOB (3)
+Protocol:
+  - TLS
+TLS-backend:
+  - OpenSSL
+Added-in: 7.71.0
 ---
 
 # NAME
@@ -38,9 +43,7 @@ setting this.
 
 NULL
 
-# PROTOCOLS
-
-All TLS based protocols: HTTPS, FTPS, IMAPS, POP3S, SMTPS etc.
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -76,9 +79,7 @@ int main(void)
 }
 ~~~
 
-# AVAILABILITY
-
-Added in 7.71.0. This option is supported by the OpenSSL backends.
+# %AVAILABILITY%
 
 # RETURN VALUE
 

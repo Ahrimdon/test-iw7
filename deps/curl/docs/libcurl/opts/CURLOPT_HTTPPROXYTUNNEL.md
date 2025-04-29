@@ -4,10 +4,13 @@ SPDX-License-Identifier: curl
 Title: CURLOPT_HTTPPROXYTUNNEL
 Section: 3
 Source: libcurl
+Protocol:
+  - All
 See-also:
   - CURLOPT_PROXY (3)
   - CURLOPT_PROXYPORT (3)
   - CURLOPT_PROXYTYPE (3)
+Added-in: 7.3
 ---
 
 # NAME
@@ -47,9 +50,7 @@ rarely works through the proxy anyway).
 
 0
 
-# PROTOCOLS
-
-All network protocols
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -66,9 +67,7 @@ int main(void)
 }
 ~~~
 
-# AVAILABILITY
-
-Always
+# %AVAILABILITY%
 
 # RETURN VALUE
 

@@ -7,6 +7,9 @@ Source: libcurl
 See-also:
   - CURLOPT_HEADEROPT (3)
   - CURLOPT_HTTPHEADER (3)
+Protocol:
+  - All
+Added-in: 7.37.0
 ---
 
 # NAME
@@ -36,15 +39,17 @@ NOT a header and cannot be replaced using this option. Only the lines
 following the request-line are headers. Adding this method line in this list
 of headers causes your request to send an invalid header.
 
-Pass a NULL to this to reset back to no custom headers.
+Using this option multiple times makes the last set list override the previous
+ones. Set it to NULL to disable its use again.
+
+libcurl does not copy the list, it needs to be kept around until after the
+transfer has completed.
 
 # DEFAULT
 
 NULL
 
-# PROTOCOLS
-
-HTTP
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -71,9 +76,7 @@ int main(void)
 }
 ~~~
 
-# AVAILABILITY
-
-Added in 7.37.0
+# %AVAILABILITY%
 
 # RETURN VALUE
 

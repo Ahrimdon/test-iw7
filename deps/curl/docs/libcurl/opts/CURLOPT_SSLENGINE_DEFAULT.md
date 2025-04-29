@@ -7,6 +7,11 @@ Source: libcurl
 See-also:
   - CURLOPT_SSLCERT (3)
   - CURLOPT_SSLENGINE (3)
+Protocol:
+  - TLS
+TLS-backend:
+  - OpenSSL
+Added-in: 7.9.3
 ---
 
 # NAME
@@ -32,9 +37,7 @@ This option has no effect unless set after CURLOPT_SSLENGINE(3).
 
 None
 
-# PROTOCOLS
-
-All TLS based protocols: HTTPS, FTPS, IMAPS, POP3S, SMTPS etc.
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -53,9 +56,7 @@ int main(void)
 }
 ~~~
 
-# AVAILABILITY
-
-Only if the SSL backend is OpenSSL built with engine support.
+# %AVAILABILITY%
 
 # RETURN VALUE
 

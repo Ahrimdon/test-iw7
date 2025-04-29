@@ -8,6 +8,13 @@ See-also:
   - CURLOPT_PROXY_SSLKEYTYPE (3)
   - CURLOPT_SSLCERT (3)
   - CURLOPT_SSLKEY (3)
+Protocol:
+  - TLS
+TLS-backend:
+  - OpenSSL
+  - BearSSL
+  - wolfSSL
+Added-in: 7.9.3
 ---
 
 # NAME
@@ -35,13 +42,14 @@ currently does not work because of a bug in OpenSSL.
 The application does not have to keep the string around after setting this
 option.
 
+Using this option multiple times makes the last set string override the
+previous ones. Set it to NULL to restore to internal default.
+
 # DEFAULT
 
 "PEM"
 
-# PROTOCOLS
-
-All TLS based protocols: HTTPS, FTPS, IMAPS, POP3S, SMTPS etc.
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -62,9 +70,7 @@ int main(void)
 }
 ~~~
 
-# AVAILABILITY
-
-If built TLS enabled.
+# %AVAILABILITY%
 
 # RETURN VALUE
 

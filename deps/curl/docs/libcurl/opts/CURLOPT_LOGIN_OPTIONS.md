@@ -7,6 +7,12 @@ Source: libcurl
 See-also:
   - CURLOPT_PASSWORD (3)
   - CURLOPT_USERNAME (3)
+Protocol:
+  - IMAP
+  - LDAP
+  - POP3
+  - SMTP
+Added-in: 7.34.0
 ---
 
 # NAME
@@ -42,13 +48,14 @@ disables the plain LOGIN (e.g. to prevent password snooping).
 The application does not have to keep the string around after setting this
 option.
 
+Using this option multiple times makes the last set string override the
+previous ones. Set it to NULL to disable its use again.
+
 # DEFAULT
 
 NULL
 
-# PROTOCOLS
-
-Only IMAP, LDAP, POP3 and SMTP support login options.
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -66,9 +73,11 @@ int main(void)
 }
 ~~~
 
-# AVAILABILITY
+# HISTORY
 
-Added in 7.34.0. Support for OpenLDAP added in 7.82.0.
+Support for OpenLDAP added in 7.82.0.
+
+# %AVAILABILITY%
 
 # RETURN VALUE
 

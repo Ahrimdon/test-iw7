@@ -8,6 +8,9 @@ See-also:
   - CURLOPT_DEBUGFUNCTION (3)
   - CURLOPT_FNMATCH_DATA (3)
   - CURLOPT_WILDCARDMATCH (3)
+Protocol:
+  - FTP
+Added-in: 7.21.0
 ---
 
 # NAME
@@ -42,9 +45,7 @@ error occurred.
 
 NULL == an internal function for wildcard matching.
 
-# PROTOCOLS
-
-FTP
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -79,9 +80,7 @@ int main(void)
 }
 ~~~
 
-# AVAILABILITY
-
-Added in 7.21.0
+# %AVAILABILITY%
 
 # RETURN VALUE
 

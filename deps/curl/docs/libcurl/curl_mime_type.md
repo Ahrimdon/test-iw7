@@ -8,6 +8,11 @@ See-also:
   - curl_mime_addpart (3)
   - curl_mime_data (3)
   - curl_mime_name (3)
+Protocol:
+  - HTTP
+  - IMAP
+  - SMTP
+Added-in: 7.56.0
 ---
 
 # NAME
@@ -49,6 +54,8 @@ extension, or application/octet-stream by default.
 
 - text/plain in other cases.
 
+# %PROTOCOLS%
+
 # EXAMPLE
 
 ~~~c
@@ -77,9 +84,7 @@ int main(void)
 }
 ~~~
 
-# AVAILABILITY
-
-As long as at least one of HTTP, SMTP or IMAP is enabled. Added in 7.56.0.
+# %AVAILABILITY%
 
 # RETURN VALUE
 

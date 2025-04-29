@@ -8,6 +8,13 @@ See-also:
   - CURLOPT_HEADERDATA (3)
   - CURLOPT_WRITEFUNCTION (3)
   - curl_easy_header (3)
+Protocol:
+  - HTTP
+  - FTP
+  - POP3
+  - IMAP
+  - SMTP
+Added-in: 7.7.2
 ---
 
 # NAME
@@ -36,12 +43,12 @@ shown above.
 This callback function gets invoked by libcurl as soon as it has received
 header data. The header callback is called once for each header and only
 complete header lines are passed on to the callback. Parsing headers is easy
-to do using this callback. *buffer* points to the delivered data, and the
-size of that data is *nitems*; *size* is always 1. The provide header
-line is not null-terminated!
+to do using this callback. *buffer* points to the delivered data, and the size
+of that data is *nitems*; *size* is always 1. The provided header line is not
+null-terminated. Do not modify the passed in buffer.
 
-The pointer named *userdata* is the one you set with the
-CURLOPT_HEADERDATA(3) option.
+The pointer named *userdata* is the one you set with the CURLOPT_HEADERDATA(3)
+option.
 
 Your callback should return the number of bytes actually taken care of. If
 that amount differs from the amount passed to your callback function, it
@@ -94,10 +101,7 @@ although strictly they are just continuations of the previous lines.
 
 Nothing.
 
-# PROTOCOLS
-
-Used for all protocols with headers or meta-data concept: HTTP, FTP, POP3,
-IMAP, SMTP and more.
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -123,9 +127,7 @@ int main(void)
 }
 ~~~
 
-# AVAILABILITY
-
-Always
+# %AVAILABILITY%
 
 # RETURN VALUE
 

@@ -9,6 +9,9 @@ See-also:
   - CURLMOPT_PUSHFUNCTION (3)
   - CURLOPT_PIPEWAIT (3)
   - RFC 7540
+Protocol:
+  - HTTP
+Added-in: 7.44.0
 ---
 
 # NAME
@@ -33,9 +36,7 @@ libcurl itself, only passed on to the callback function.
 
 NULL
 
-# PROTOCOLS
-
-HTTP(S)
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -78,9 +79,7 @@ int main(void)
 }
 ~~~
 
-# AVAILABILITY
-
-Added in 7.44.0
+# %AVAILABILITY%
 
 # RETURN VALUE
 

@@ -9,6 +9,9 @@ See-also:
   - CURLMOPT_PUSHDATA (3)
   - CURLOPT_PIPEWAIT (3)
   - RFC 7540
+Protocol:
+  - HTTP
+Added-in: 7.44.0
 ---
 
 # NAME
@@ -94,9 +97,7 @@ All other return codes are reserved for future use.
 
 NULL, no callback
 
-# PROTOCOLS
-
-HTTP(S) (HTTP/2 only)
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -139,9 +140,7 @@ int main(void)
 }
 ~~~
 
-# AVAILABILITY
-
-Added in 7.44.0
+# %AVAILABILITY%
 
 # RETURN VALUE
 

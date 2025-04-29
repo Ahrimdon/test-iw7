@@ -9,6 +9,13 @@ See-also:
   - CURLOPT_MAXFILESIZE_LARGE (3)
   - CURLOPT_MAX_RECV_SPEED_LARGE (3)
   - CURLOPT_RESUME_FROM (3)
+Protocol:
+  - HTTP
+  - FTP
+  - FILE
+  - RTSP
+  - SFTP
+Added-in: 7.1
 ---
 
 # NAME
@@ -43,7 +50,8 @@ RTSP, byte ranges are **not** permitted. Instead, ranges should be given in
 For HTTP PUT uploads this option should not be used, since it may conflict with
 other options.
 
-Pass a NULL to this option to disable the use of ranges.
+Using this option multiple times makes the last set string override the
+previous ones. Set it to NULL to disable its use again.
 
 The application does not have to keep the string around after setting this
 option.
@@ -52,9 +60,7 @@ option.
 
 NULL
 
-# PROTOCOLS
-
-HTTP, FTP, FILE, RTSP and SFTP.
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -74,9 +80,11 @@ int main(void)
 }
 ~~~
 
-# AVAILABILITY
+# HISTORY
 
 FILE since 7.18.0, RTSP since 7.20.0
+
+# %AVAILABILITY%
 
 # RETURN VALUE
 

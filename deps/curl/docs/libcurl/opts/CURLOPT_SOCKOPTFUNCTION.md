@@ -8,6 +8,9 @@ See-also:
   - CURLOPT_OPENSOCKETFUNCTION (3)
   - CURLOPT_SEEKFUNCTION (3)
   - CURLOPT_SOCKOPTDATA (3)
+Protocol:
+  - All
+Added-in: 7.16.0
 ---
 
 # NAME
@@ -70,11 +73,9 @@ not attempt to connect (again).
 
 # DEFAULT
 
-By default, this callback is NULL and unused.
+NULL
 
-# PROTOCOLS
-
-All
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -122,10 +123,7 @@ int main(void)
 }
 ~~~
 
-# AVAILABILITY
-
-Added in 7.16.0. The *CURL_SOCKOPT_ALREADY_CONNECTED* return code was
-added in 7.21.5.
+# %AVAILABILITY%
 
 # RETURN VALUE
 

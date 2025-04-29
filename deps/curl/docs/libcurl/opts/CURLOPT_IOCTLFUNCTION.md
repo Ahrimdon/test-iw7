@@ -4,9 +4,12 @@ SPDX-License-Identifier: curl
 Title: CURLOPT_IOCTLFUNCTION
 Section: 3
 Source: libcurl
+Protocol:
+  - All
 See-also:
   - CURLOPT_IOCTLDATA (3)
   - CURLOPT_SEEKFUNCTION (3)
+Added-in: 7.12.3
 ---
 
 # NAME
@@ -54,16 +57,14 @@ The *clientp* argument to the callback is set with the
 CURLOPT_IOCTLDATA(3) option.
 
 **This option is deprecated**. Do not use it. Use CURLOPT_SEEKFUNCTION(3)
-instead to provide seeking! If CURLOPT_SEEKFUNCTION(3) is set, this
+instead to provide seeking. If CURLOPT_SEEKFUNCTION(3) is set, this
 parameter is ignored when seeking.
 
 # DEFAULT
 
-By default, this parameter is set to NULL. Not used.
+NULL
 
-# PROTOCOLS
-
-Used with HTTP
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -94,9 +95,11 @@ int main(void)
 }
 ~~~
 
-# AVAILABILITY
+# DEPRECATED
 
-Added in 7.12.3. Deprecated since 7.18.0.
+Deprecated since 7.18.0.
+
+# %AVAILABILITY%
 
 # RETURN VALUE
 

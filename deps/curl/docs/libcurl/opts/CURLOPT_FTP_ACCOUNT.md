@@ -4,9 +4,12 @@ SPDX-License-Identifier: curl
 Title: CURLOPT_FTP_ACCOUNT
 Section: 3
 Source: libcurl
+Protocol:
+  - FTP
 See-also:
   - CURLOPT_PASSWORD (3)
   - CURLOPT_USERNAME (3)
+Added-in: 7.13.0
 ---
 
 # NAME
@@ -30,13 +33,14 @@ this data is sent off using the ACCT command.
 The application does not have to keep the string around after setting this
 option.
 
+Using this option multiple times makes the last set string override the
+previous ones. Set it to NULL to disable its use again.
+
 # DEFAULT
 
 NULL
 
-# PROTOCOLS
-
-FTP
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -57,9 +61,7 @@ int main(void)
 }
 ~~~
 
-# AVAILABILITY
-
-Added in 7.13.0
+# %AVAILABILITY%
 
 # RETURN VALUE
 

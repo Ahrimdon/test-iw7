@@ -8,6 +8,9 @@ See-also:
   - CURLMOPT_SOCKETFUNCTION (3)
   - CURLMOPT_TIMERFUNCTION (3)
   - curl_multi_socket_action (3)
+Protocol:
+  - All
+Added-in: 7.15.4
 ---
 
 # NAME
@@ -34,9 +37,7 @@ callback's **clientp** argument.
 
 NULL
 
-# PROTOCOLS
-
-All
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -73,9 +74,7 @@ int main(void)
 }
 ~~~
 
-# AVAILABILITY
-
-Added in 7.15.4
+# %AVAILABILITY%
 
 # RETURN VALUE
 

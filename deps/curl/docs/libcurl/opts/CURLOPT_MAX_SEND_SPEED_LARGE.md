@@ -7,6 +7,9 @@ Source: libcurl
 See-also:
   - CURLOPT_LOW_SPEED_LIMIT (3)
   - CURLOPT_MAX_RECV_SPEED_LARGE (3)
+Protocol:
+  - All
+Added-in: 7.15.5
 ---
 
 # NAME
@@ -42,9 +45,7 @@ This option does not affect transfer speeds done with FILE:// URLs.
 
 0, disabled
 
-# PROTOCOLS
-
-All except file://
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -57,15 +58,13 @@ int main(void)
     curl_easy_setopt(curl, CURLOPT_URL, "https://example.com/");
     /* cap the upload speed to 1000 bytes/sec */
     curl_easy_setopt(curl, CURLOPT_MAX_SEND_SPEED_LARGE, (curl_off_t)1000);
-    /* (set some upload options as well!) */
+    /* (set some upload options as well) */
     ret = curl_easy_perform(curl);
   }
 }
 ~~~
 
-# AVAILABILITY
-
-Added in 7.15.5
+# %AVAILABILITY%
 
 # RETURN VALUE
 

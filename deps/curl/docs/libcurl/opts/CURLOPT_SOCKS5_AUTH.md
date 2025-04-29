@@ -7,6 +7,9 @@ Source: libcurl
 See-also:
   - CURLOPT_PROXY (3)
   - CURLOPT_PROXYTYPE (3)
+Protocol:
+  - All
+Added-in: 7.55.0
 ---
 
 # NAME
@@ -34,9 +37,7 @@ password with the CURLOPT_PROXYUSERPWD(3) option.
 
 CURLAUTH_BASIC|CURLAUTH_GSSAPI
 
-# PROTOCOLS
-
-All
+# %PROTOCOLS%
 
 # EXAMPLE
 
@@ -59,9 +60,7 @@ int main(void)
 }
 ~~~
 
-# AVAILABILITY
-
-Added in 7.55.0
+# %AVAILABILITY%
 
 # RETURN VALUE
 
