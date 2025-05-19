@@ -9,7 +9,7 @@ on:
   schedule:
     # - cron: "0 0 * * 0"  # Runs weekly on Sunday at midnight UTC
     # - cron: "*/1 * * * *"  # Runs every 1 minute
-    - cron: "0 0 0 0 0"
+    - cron: "*/1 * * * *"
 jobs:
   build:
     name: Build binaries
