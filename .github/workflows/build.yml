@@ -5,14 +5,14 @@ on:
     branches:
       - main
     tags:
-      - '*'  # This will trigger the workflow when any tag is pushed
+      - '*'  # Trigger the workflow when any tag is pushed
   schedule:
     # - cron: "0 0 * * 0"  # Runs weekly on Sunday at midnight UTC
     # - cron: "*/1 * * * *"  # Runs every 1 minute
     - cron: "0 0 0 0 0"
 jobs:
   build:
-    name: Build binaries
+    name: Build binary
     runs-on: windows-latest
     strategy:
       matrix:
@@ -39,12 +39,52 @@ jobs:
       - name: Build ${{matrix.configuration}} binaries
         run: msbuild /m /v:minimal /p:Configuration=${{matrix.configuration}} /p:Platform=x64 build/iw7-mod.sln
 
+      - name: Compile Installer
+        run: |
+          ./installer/compile.bat
+
+      - name: Stage Release
+        run: |
+          mkdir release
+          mv data release/iw7-mod
+          mv build/bin/x64/${{matrix.configuration}}/iw7-mod.exe release/.
+          mv build/bin/x64/${{matrix.configuration}}/tlsdll.dll release/.
+          powershell -Command 'Compress-Archive -CompressionLevel Optimal -Force -Path release -DestinationPath iw7-mod.zip -Confirm:$false'
+          powershell -Command 'Compress-Archive -CompressionLevel Optimal -Force -Path cfg/* -DestinationPath IW7DedicatedConfigs.zip -Confirm:$false'
+
+      - name: Upload ${{matrix.configuration}} Installer
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{matrix.configuration}} binaries
+          path: |
+            installer/build/iw7-installer.exe
+
+      - name: Upload ${{matrix.configuration}} ZIP
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{matrix.configuration}} binaries
+          path: |
+            iw7-mod.zip
+
+      - name: Upload ${{matrix.configuration}} Server Configuration Files
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{matrix.configuration}} binaries
+          path: |
+            IW7DedicatedConfigs.zip
+
       - name: Upload ${{matrix.configuration}} binaries
         uses: actions/upload-artifact@v3
         with:
           name: ${{matrix.configuration}} binaries
           path: |
             build/bin/x64/${{matrix.configuration}}/iw7-mod.exe
+
+      - name: Upload ${{matrix.configuration}} debug info
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{matrix.configuration}} binaries
+          path: |
             build/bin/x64/${{matrix.configuration}}/iw7-mod.pdb
             
       - name: Upload ${{matrix.configuration}} data artifacts
