@@ -13,12 +13,11 @@ on:
 jobs:
   build:
     name: Build binaries
-    runs-on: windows-2022
+    runs-on: windows-latest
     strategy:
       matrix:
         configuration:
           - Release
-          - Debug
     steps:
       - name: Check out files
         uses: actions/checkout@v4
